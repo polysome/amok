@@ -22,7 +22,6 @@ char *test_RandomFill()
 
         rc = Random_Fill(rsb, (char *)&ib, 8);
 
-        fprintf(stderr, "Failed\n");
         mu_assert(ia == ib, "Random values not equal");
     }
 
