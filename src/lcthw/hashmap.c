@@ -12,7 +12,8 @@ static int default_compare(void *a, void *b)
  * Simple Bob Jenkins's hash algorithm taken from the
  * wikipedia description.
  */
-static uint32_t default_hash(void *a)
+static uint32_t 
+default_hash(void *a)
 {
     size_t len = blength((bstring)a);
     char *key = bdata((bstring)a);
@@ -34,7 +35,8 @@ static uint32_t default_hash(void *a)
 }
 
 
-Hashmap *Hashmap_create(Hashmap_compare compare, Hashmap_hash hash)
+Hashmap *
+Hashmap_create(Hashmap_compare compare, Hashmap_hash hash)
 {
     Hashmap *map = calloc(1, sizeof(Hashmap));
     check_mem(map);
@@ -56,7 +58,8 @@ error:
 }
 
 
-void Hashmap_destroy(Hashmap *map)
+void 
+Hashmap_destroy(Hashmap *map)
 {
     int i = 0;
     int j = 0;
@@ -79,7 +82,8 @@ void Hashmap_destroy(Hashmap *map)
     }
 }
 
-static inline HashmapNode *Hashmap_node_create(int hash, void *key, void *data)
+static inline HashmapNode *
+Hashmap_node_create(int hash, void *key, void *data)
 {
     HashmapNode *node = calloc(1, sizeof(HashmapNode));
     check_mem(node);
@@ -95,7 +99,8 @@ error:
 }
 
 
-static inline DArray *Hashmap_find_bucket(Hashmap *map, void *key,
+static inline DArray *
+Hashmap_find_bucket(Hashmap *map, void *key,
         int create, uint32_t *hash_out)
 {
     uint32_t hash = map->hash(key);
@@ -119,7 +124,8 @@ error:
     return NULL;
 }
 
-static inline int Hashmap_get_node(Hashmap *map, uint32_t hash, DArray *bucket, void *key)
+static inline int 
+Hashmap_get_node(Hashmap *map, uint32_t hash, DArray *bucket, void *key)
 {
     int i = 0;
 
@@ -133,7 +139,8 @@ static inline int Hashmap_get_node(Hashmap *map, uint32_t hash, DArray *bucket, 
     return -1;
 }
 
-int Hashmap_set(Hashmap *map, void *key, void *data)
+int 
+Hashmap_set(Hashmap *map, void *key, void *data)
 {
     uint32_t hash = 0;
     DArray *bucket = Hashmap_find_bucket(map, key, 1, &hash);
@@ -153,7 +160,8 @@ error:
     return -1;
 }
 
-void *Hashmap_get(Hashmap *map, void *key)
+void *
+Hashmap_get(Hashmap *map, void *key)
 {
     uint32_t hash = 0;
     DArray *bucket = Hashmap_find_bucket(map, key, 0, &hash);
@@ -171,7 +179,8 @@ error: // fallthrough
     return NULL;
 }
 
-int Hashmap_freeNodeData(void *context, HashmapNode *node)
+int 
+Hashmap_freeNodeData(void *context, HashmapNode *node)
 {
     (void)(context);
 
@@ -179,7 +188,8 @@ int Hashmap_freeNodeData(void *context, HashmapNode *node)
     return 0;
 }
 
-int Hashmap_traverse(Hashmap *map, void *context, Hashmap_traverse_cb traverse_cb)
+int 
+Hashmap_traverse(Hashmap *map, void *context, Hashmap_traverse_cb traverse_cb)
 {
     int i = 0;
     int j = 0;
@@ -199,7 +209,8 @@ int Hashmap_traverse(Hashmap *map, void *context, Hashmap_traverse_cb traverse_c
     return 0;
 }
 
-void *Hashmap_delete(Hashmap *map, void *key)
+void *
+Hashmap_delete(Hashmap *map, void *key)
 {
     uint32_t hash = 0;
     DArray *bucket = Hashmap_find_bucket(map, key, 0, &hash);

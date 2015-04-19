@@ -13,7 +13,8 @@
 
 int CreateSocket();
 
-Client *Client_Create(Hash id,
+Client *
+Client_Create(Hash id,
                       uint32_t addr,
                       uint16_t port,
                       uint16_t peer_port)
@@ -72,7 +73,8 @@ error:
     return NULL;
 }
 
-void Client_Destroy(Client *client)
+void 
+Client_Destroy(Client *client)
 {
     if (client == NULL)
         return;
@@ -104,7 +106,8 @@ void Client_Destroy(Client *client)
 
 #define TOKEN_DATA_LEN (sizeof(Hash) + sizeof(in_addr_t))
 
-Token MakeToken(Client *client, Node *from, int secret)
+Token 
+MakeToken(Client *client, Node *from, int secret)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(from != NULL && "NULL Node pointer");
@@ -121,7 +124,8 @@ Token MakeToken(Client *client, Node *from, int secret)
     return token;
 }
 
-Token Client_MakeToken(Client *client, Node *from)
+Token 
+Client_MakeToken(Client *client, Node *from)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(from != NULL && "NULL Node pointer");
@@ -129,7 +133,8 @@ Token Client_MakeToken(Client *client, Node *from)
     return MakeToken(client, from, 0);
 }
 
-int Client_IsValidToken(Client *client, Node *from, char *token, size_t token_len)
+int 
+Client_IsValidToken(Client *client, Node *from, char *token, size_t token_len)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(from != NULL && "NULL Node pointer");
@@ -150,7 +155,8 @@ int Client_IsValidToken(Client *client, Node *from, char *token, size_t token_le
     return 0;
 }
 
-int Client_NewSecret(Client *client)
+int 
+Client_NewSecret(Client *client)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(client->buf != NULL && "NULL Client buf pointer");
@@ -182,7 +188,8 @@ error:
     return -1;
 }
 
-int CreateSocket()
+int 
+CreateSocket()
 {
     int sock = socket(AF_INET, SOCK_DGRAM, 0);
     check(sock != -1, "Create socket failed");
@@ -192,7 +199,8 @@ error:
     return -1;
 }
 
-int Client_AddPeer(Client *client, Hash *info_hash, Peer *peer)
+int 
+Client_AddPeer(Client *client, Hash *info_hash, Peer *peer)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(info_hash != NULL && "NULL Hash pointer");
@@ -209,7 +217,8 @@ error:
     return -1;
 }
 
-int Client_GetPeers(Client *client, Hash *info_hash, DArray **peers)
+int 
+Client_GetPeers(Client *client, Hash *info_hash, DArray **peers)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(info_hash != NULL && "NULL Hash pointer");
@@ -227,7 +236,8 @@ error:
     return -1;
 }
 
-Search *Client_AddSearch(Client *client, Hash *target)
+Search *
+Client_AddSearch(Client *client, Hash *target)
 {
     Search *search = Search_Create(target);
     check(search != NULL, "Search_Create failed");
@@ -244,7 +254,8 @@ error:
     return NULL;
 }
 
-int Client_MarkInvalidMessage(Client *client, Node *from)
+int 
+Client_MarkInvalidMessage(Client *client, Node *from)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(from != NULL && "NULL Node pointer");

@@ -7,7 +7,8 @@
 #include <dht/table.h>
 #include <lcthw/dbg.h>
 
-Search *Search_Create(Hash *id)
+Search *
+Search_Create(Hash *id)
 {
     assert(id != NULL && "NULL Hash pointer");
 
@@ -38,7 +39,8 @@ struct FTokenEntry {
 
 int FreeFTokenEntry_cb(void *, HashmapNode *node);
 
-void Search_Destroy(Search *search)
+void 
+Search_Destroy(Search *search)
 {
     if (search == NULL)
     {
@@ -55,7 +57,8 @@ void Search_Destroy(Search *search)
     free(search);
 }
 
-int Search_IsDone(Search *search, time_t now)
+int 
+Search_IsDone(Search *search, time_t now)
 {
     const int search_respite = 3;
 
@@ -68,7 +71,8 @@ int Search_IsDone(Search *search, time_t now)
     return 0;
 }
 
-int Search_CopyTable(Search *search, Table *source)
+int 
+Search_CopyTable(Search *search, Table *source)
 {
     assert(search != NULL && "NULL Search pointer");
     assert(source != NULL && "NULL Table pointer");
@@ -77,7 +81,8 @@ int Search_CopyTable(Search *search, Table *source)
     return Table_ForEachNode(source, search->table, (NodeOp)Table_CopyAndAddNode);
 }
 
-int Search_AddPeers(Search *search, Peer *peers, int count)
+int 
+Search_AddPeers(Search *search, Peer *peers, int count)
 {
     assert(search != NULL && "NULL Search pointer");
     assert(peers != NULL && "NULL Peer pointer");
@@ -96,7 +101,8 @@ error:
     return -1;
 }
 
-void FTokenEntry_Delete(struct FTokenEntry *entry)
+void 
+FTokenEntry_Delete(struct FTokenEntry *entry)
 {
     if (entry != NULL)
     {
@@ -105,7 +111,8 @@ void FTokenEntry_Delete(struct FTokenEntry *entry)
     }
 }
 
-int FreeFTokenEntry_cb(void *context, HashmapNode *node)
+int 
+FreeFTokenEntry_cb(void *context, HashmapNode *node)
 {
     (void)context;
 
@@ -114,7 +121,8 @@ int FreeFTokenEntry_cb(void *context, HashmapNode *node)
     return 0;
 }
 
-struct FTokenEntry *FTokenEntry_Create(struct FToken token, Hash *id)
+struct FTokenEntry *
+FTokenEntry_Create(struct FToken token, Hash *id)
 {
     assert(id != NULL && "NULL Hash pointer");
 
@@ -134,7 +142,8 @@ error:
     return NULL;
 }
 
-int Search_SetToken(Search *search, Hash *id, struct FToken token)
+int 
+Search_SetToken(Search *search, Hash *id, struct FToken token)
 {
     assert(search != NULL && "NULL Search pointer");
     assert(id != NULL && "NULL Hash pointer");
@@ -153,7 +162,8 @@ error:
     return -1;
 }
 
-struct FToken *Search_GetToken(Search *search, Hash *id)
+struct FToken *
+Search_GetToken(Search *search, Hash *id)
 {
     assert(search != NULL && "NULL Search pointer");
     assert(id != NULL && "NULL Hash pointer");
@@ -174,7 +184,8 @@ struct ClientSearch {
     int count;
 };
 
-int SendFindNodes(struct ClientSearch *context, Node *node)
+int 
+SendFindNodes(struct ClientSearch *context, Node *node)
 {
     if (node->rfindnode_count > 0)
         return 0;
@@ -197,7 +208,8 @@ error:
     return -1;
 }
 
-int SendGetPeers(struct ClientSearch *context, Node *node)
+int 
+SendGetPeers(struct ClientSearch *context, Node *node)
 {
     if (node->rgetpeers_count > 0)
         return 0;
@@ -221,7 +233,8 @@ error:
     return -1;
 }
 
-int SendAnnouncePeer(struct ClientSearch *context, Node *node)
+int 
+SendAnnouncePeer(struct ClientSearch *context, Node *node)
 {
     if (node->rannounce_count > 0)
         return 0;
@@ -257,7 +270,8 @@ error:
     return -1;
 }
 
-int Search_DoWork(Client *client, Search *search)
+int 
+Search_DoWork(Client *client, Search *search)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(search != NULL && "NULL Search pointer");

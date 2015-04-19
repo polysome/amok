@@ -14,7 +14,8 @@ int DecodeQuery(Message *message, BNode *dict);
 int DecodeResponse(Message *message, BNode *dict, struct PendingResponses *pending);
 int DecodeError(Message *message, BNode *dict);
 
-Message *Message_Decode(char *data, size_t len, struct PendingResponses *pending)
+Message *
+Message_Decode(char *data, size_t len, struct PendingResponses *pending)
 {
     assert(data != NULL && "NULL data pointer");
 
@@ -63,7 +64,8 @@ error:
     return NULL;
 }
 
-char GetMessageType(BNode *dict)
+char 
+GetMessageType(BNode *dict)
 {
     assert(dict != NULL && "NULL BNode pointer");
     assert(dict->type == BDictionary && "Not a BDictionary");
@@ -85,7 +87,8 @@ int SetTransactionId(Message *message, BNode *dict);
 void SetQueryId(Message *message, BNode *dict);
 int SetQueryData(Message *message, BNode *dict);
 
-int DecodeQuery(Message *message, BNode *dict)
+int 
+DecodeQuery(Message *message, BNode *dict)
 {
     assert(message != NULL && "NULL Message pointer");
     assert(dict != NULL && "NULL BNode pointer");
@@ -105,7 +108,8 @@ error:
     return -1;
 }
 
-void SetQueryType(Message *message, BNode *dict)
+void 
+SetQueryType(Message *message, BNode *dict)
 {
     assert(message != NULL && "NULL Message pointer");
     assert(dict != NULL && "NULL BNode pointer");
@@ -148,7 +152,8 @@ invalid:
     return;
 }    
 
-int SetTransactionId(Message *message, BNode *dict)
+int 
+SetTransactionId(Message *message, BNode *dict)
 {
     assert(message != NULL && "NULL Message pointer");
     assert(dict != NULL && "NULL BNode dictionary pointer");
@@ -174,7 +179,8 @@ error:
     return -1;
 }
 
-void SetQueryId(Message *message, BNode *dict)
+void 
+SetQueryId(Message *message, BNode *dict)
 {
     assert(message != NULL && "NULL Message pointer");
     assert(dict != NULL && "NULL BNode dictionary pointer");
@@ -205,7 +211,8 @@ int SetQueryFindNodeData(Message *message, BNode *arguments);
 int SetQueryGetPeersData(Message *message, BNode *arguments);
 int SetQueryAnnouncePeerData(Message *message, BNode *arguments);
 
-int SetQueryData(Message *message, BNode *dict)
+int 
+SetQueryData(Message *message, BNode *dict)
 {
     assert(message != NULL && "NULL Message pointer");
     assert(dict != NULL && "NULL BNode dictionary pointer");
@@ -250,7 +257,8 @@ int SetQueryData(Message *message, BNode *dict)
     return -1;
 }
 
-int SetQueryFindNodeData(Message *message, BNode *arguments)
+int 
+SetQueryFindNodeData(Message *message, BNode *arguments)
 {
     assert(message != NULL && "NULL Message pointer");
     assert(arguments != NULL && "NULL BNode dictionary pointer");
@@ -275,14 +283,16 @@ error:
     return -1;
 }
 
-int IsInfoHashNode(BNode *node)
+int 
+IsInfoHashNode(BNode *node)
 {
     return node != NULL
         && node->type == BString
         && node->count == HASH_BYTES;
 }
 
-int SetQueryGetPeersData(Message *message, BNode *arguments)
+int 
+SetQueryGetPeersData(Message *message, BNode *arguments)
 {
     assert(message != NULL && "NULL Message pointer");
     assert(message->type == QGetPeers && "Wrong Message type");
@@ -309,7 +319,8 @@ error:
     return -1;
 }
 
-int SetQueryAnnouncePeerData(Message *message, BNode *arguments)
+int 
+SetQueryAnnouncePeerData(Message *message, BNode *arguments)
 {
     assert(message != NULL && "NULL Message pointer");
     assert(message->type == QAnnouncePeer && "Wrong Message type");
@@ -367,7 +378,8 @@ error:
 int SetResponseData(Message *message, BNode *dict);
 void SetResponseId(Message *message, BNode *dict);
 
-int DecodeResponse(Message *message, BNode *dict, struct PendingResponses *pending)
+int 
+DecodeResponse(Message *message, BNode *dict, struct PendingResponses *pending)
 {
     assert(message != NULL && "NULL Message pointer");
     assert(dict != NULL && "NULL BNode pointer");
@@ -409,7 +421,8 @@ error:
     return -1;
 }
 
-void SetResponseId(Message *message, BNode *dict)
+void 
+SetResponseId(Message *message, BNode *dict)
 {
     assert(message != NULL && "NULL Message pointer");
     assert(dict != NULL && "NULL BNode pointer");
@@ -439,7 +452,8 @@ void SetResponseId(Message *message, BNode *dict)
 int SetResponseFindNodeData(Message *message, BNode *arguments);
 int SetResponseGetPeersData(Message *message, BNode *arguments);
 
-int SetResponseData(Message *message, BNode *dict)
+int 
+SetResponseData(Message *message, BNode *dict)
 {
     assert(message != NULL && "NULL Message pointer");
     assert(MessageType_IsReply(message->type) && "Not a reply");
@@ -473,7 +487,8 @@ int SetResponseData(Message *message, BNode *dict)
 
 int SetCompactNodeInfo(Message *message, BNode *string);
 
-int SetResponseFindNodeData(Message *message, BNode *arguments)
+int 
+SetResponseFindNodeData(Message *message, BNode *arguments)
 {
     assert(message != NULL && "NULL Message pointer");
     assert(message->type == RFindNode && "Wrong message type");
@@ -493,7 +508,8 @@ int SetResponseFindNodeData(Message *message, BNode *arguments)
 
 #define COMPACTNODE_BYTES (HASH_BYTES + sizeof(uint32_t) + sizeof(uint16_t))
 
-int SetCompactNodeInfo(Message *message, BNode *string)
+int 
+SetCompactNodeInfo(Message *message, BNode *string)
 {
     assert(message != NULL && "NULL Message pointer");
     assert((message->type == RFindNode || message->type == RGetPeers)
@@ -542,7 +558,8 @@ error:
 
 int SetCompactPeerInfo(Message *message, BNode *list);
 
-int SetResponseGetPeersData(Message *message, BNode *arguments)
+int 
+SetResponseGetPeersData(Message *message, BNode *arguments)
 {
     assert(message != NULL && "NULL Message pointer");
     assert(message->type == RGetPeers && "Wrong message type");
@@ -600,7 +617,8 @@ error:
 
 #define COMPACTPEER_BYTES (sizeof(uint32_t) + sizeof(uint16_t))
 
-int SetCompactPeerInfo(Message *message, BNode *list)
+int 
+SetCompactPeerInfo(Message *message, BNode *list)
 {
     assert(message != NULL && "NULL Message pointer");
     assert(message->type == RGetPeers && "Wrong Message type");
@@ -639,7 +657,8 @@ error:
     return -1;
 }
 
-int DecodeError(Message *message, BNode *dict)
+int 
+DecodeError(Message *message, BNode *dict)
 {
     assert(message != NULL && "NULL Message pointer");
     assert(dict != NULL && "NULL BNode pointer");

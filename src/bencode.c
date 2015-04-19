@@ -4,7 +4,8 @@
 #include <dht/bencode.h>
 #include <lcthw/dbg.h>
 
-char *BType_Name(BType type)
+char *
+BType_Name(BType type)
 {
     switch (type)
     {
@@ -18,7 +19,8 @@ char *BType_Name(BType type)
     return NULL;
 }
 
-BNode *BNode_create(BType type)
+BNode *
+BNode_create(BType type)
 {
     BNode *node = calloc(1, sizeof(BNode));
 
@@ -31,7 +33,8 @@ error:
     return NULL;
 }
 
-char *find_integer_end(char *data, size_t len)
+char *
+find_integer_end(char *data, size_t len)
 {
     size_t i = 0;
 
@@ -55,7 +58,8 @@ char *find_integer_end(char *data, size_t len)
     return NULL;
 }
 
-BNode *BDecode_integer(char *data, size_t len)
+BNode *
+BDecode_integer(char *data, size_t len)
 {
     assert(data != NULL && "NULL char pointer");
 
@@ -98,7 +102,8 @@ error:
     return NULL;
 }
 
-BNode **add_to_list(BNode *node, BNode **nodes, size_t *count, size_t *capacity)
+BNode **
+add_to_list(BNode *node, BNode **nodes, size_t *count, size_t *capacity)
 {
     assert(node != NULL && "NULL BNode pointer");
     assert(count != NULL && "NULL size_t pointer");
@@ -128,7 +133,8 @@ error:
     return NULL;
 }
 
-BNode *BDecode_list_or_dict(char *data, size_t len, char head_ch, BType type)
+BNode *
+BDecode_list_or_dict(char *data, size_t len, char head_ch, BType type)
 {
     assert(data != NULL && "NULL char pointer");
 
@@ -183,12 +189,14 @@ error:
     return NULL;
 }
 
-BNode *BDecode_list(char *data, size_t len)
+BNode *
+BDecode_list(char *data, size_t len)
 {
     return BDecode_list_or_dict(data, len, 'l', BList);
 }
 
-char *find_string_length_end(char *data, size_t len)
+char *
+find_string_length_end(char *data, size_t len)
 {
     size_t i = 0;
 
@@ -209,7 +217,8 @@ char *find_string_length_end(char *data, size_t len)
     return NULL;
 }
 
-BNode *BDecode_string(char *data, size_t len)
+BNode *
+BDecode_string(char *data, size_t len)
 {
     assert(data != NULL && "NULL char pointer");
 
@@ -243,7 +252,8 @@ error:
     return NULL;
 }
 
-int compare_keys(char *a, const size_t a_len, char *b, const size_t b_len)
+int 
+compare_keys(char *a, const size_t a_len, char *b, const size_t b_len)
 {
     assert(a != NULL && "NULL char pointer");
     assert(b != NULL && "NULL char pointer");
@@ -260,7 +270,8 @@ int compare_keys(char *a, const size_t a_len, char *b, const size_t b_len)
     return a_len < b_len ? -1 : b_len < a_len;
 }    
 
-int is_less_than(char *a, const size_t a_len, char *b, const size_t b_len)
+int 
+is_less_than(char *a, const size_t a_len, char *b, const size_t b_len)
 {
     assert(a != NULL && "NULL char pointer");
     assert(b != NULL && "NULL char pointer");
@@ -268,7 +279,8 @@ int is_less_than(char *a, const size_t a_len, char *b, const size_t b_len)
     return compare_keys(a, a_len, b, b_len) < 0;
 }
 
-int all_string_keys(BNode *nodes, size_t count)
+int 
+all_string_keys(BNode *nodes, size_t count)
 {
     assert(nodes != NULL && "NULL BNode pointer");
 
@@ -283,7 +295,8 @@ int all_string_keys(BNode *nodes, size_t count)
     return 1;
 }
 
-BNode *BDecode_dictionary(char *data, size_t len)
+BNode *
+BDecode_dictionary(char *data, size_t len)
 {
     assert(data != NULL && "NULL char pointer");
 
@@ -315,7 +328,8 @@ error:
     return NULL;
 }
 
-BNode *BDecode(char *data, size_t len)
+BNode *
+BDecode(char *data, size_t len)
 {
     BNode *node = NULL;
 
@@ -360,7 +374,8 @@ error:
     return NULL;
 }
 
-void BNode_Destroy(BNode *node)
+void 
+BNode_Destroy(BNode *node)
 {
     if (node == NULL)
         return;
@@ -379,7 +394,8 @@ void BNode_Destroy(BNode *node)
     free(node);
 }
 
-BNode *BNode_GetValue(BNode *dict, char *key, size_t key_len)
+BNode *
+BNode_GetValue(BNode *dict, char *key, size_t key_len)
 {
     assert(dict != NULL && "NULL BNode pointer");
 
@@ -421,7 +437,8 @@ error:
     return NULL;
 }
 
-char *BNode_CopyString(BNode *string)
+char *
+BNode_CopyString(BNode *string)
 {
     assert(string != NULL && "NULL BNode pointer");
 
@@ -437,7 +454,8 @@ error:
     return NULL;
 }
 
-int BNode_StringEquals(char *string, BNode *bstring)
+int 
+BNode_StringEquals(char *string, BNode *bstring)
 {
     assert(string != NULL && "NULL char pointer");
     assert(bstring != NULL && "NULL BNode string pointer");
@@ -453,7 +471,8 @@ int BNode_StringEquals(char *string, BNode *bstring)
     return strncmp(string, (char *)bstring->value.string, len) == 0;
 }
 
-bstring BNode_bstring(BNode *string)
+bstring 
+BNode_bstring(BNode *string)
 {
     assert(string != NULL && "NULL BNode string pointer");
 

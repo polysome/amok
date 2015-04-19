@@ -6,7 +6,8 @@
 #include <lcthw/dbg.h>
 #include <lcthw/list.h>
 
-DArray *Hooks_Create()
+DArray *
+Hooks_Create()
 {
     DArray *array = DArray_create(sizeof(Hook *), HookTypeMax);
     check(array != NULL, "DArray_create failed");
@@ -25,7 +26,8 @@ error:
     return NULL;
 }
 
-void Hooks_Destroy(DArray *array)
+void 
+Hooks_Destroy(DArray *array)
 {
     if (array == NULL)
         return;
@@ -38,7 +40,8 @@ void Hooks_Destroy(DArray *array)
     DArray_destroy(array);
 }
 
-int Client_AddHook(Client *client, Hook *hook)
+int 
+Client_AddHook(Client *client, Hook *hook)
 {
     assert(client != NULL && "NULL client pointer");
     assert(hook != NULL && "NULL Hook pointer");
@@ -53,7 +56,8 @@ error:
     return -1;
 }
 
-int Client_RemoveHook(Client *client, Hook *hook)
+int 
+Client_RemoveHook(Client *client, Hook *hook)
 {
     assert(client != NULL && "NULL client pointer");
     assert(hook != NULL && "NULL Hook pointer");
@@ -69,7 +73,8 @@ error:
     return -1;
 }
 
-Hook *Hook_Create(HookType type, HookOp fun)
+Hook *
+Hook_Create(HookType type, HookOp fun)
 {
     assert(fun != NULL && "NULL HookOp");
 
@@ -84,13 +89,15 @@ error:
     return NULL;
 }
 
-void Hook_Destroy(Hook *hook)
+void 
+Hook_Destroy(Hook *hook)
 {
     free(hook);
 }
 
 
-int Client_RunHook(Client *client, HookType type, void *args)
+int 
+Client_RunHook(Client *client, HookType type, void *args)
 {
     assert(client != NULL && "NULL Client pointer");
 

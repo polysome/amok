@@ -6,7 +6,8 @@
 
 /* Hash */
 
-Hash *Hash_Clone(Hash *hash)
+Hash *
+Hash_Clone(Hash *hash)
 {
     assert(hash != NULL && "NULL Hash hash pointer");
     assert(HASH_BYTES % sizeof(int32_t) == 0 && "Size confusion");
@@ -21,12 +22,14 @@ error:
     return NULL;
 }
 
-void Hash_Destroy(Hash *hash)
+void 
+Hash_Destroy(Hash *hash)
 {
     free(hash);
 }
 
-int Hash_Random(RandomState *rs, Hash *hash)
+int 
+Hash_Random(RandomState *rs, Hash *hash)
 {
     assert(rs != NULL && "NULL RandomState pointer");
     assert(hash != NULL && "NULL Hash pointer");
@@ -39,7 +42,8 @@ error:
     return -1;
 }
 
-int Hash_Prefix(Hash *hash, Hash *prefix, unsigned int prefix_len)
+int 
+Hash_Prefix(Hash *hash, Hash *prefix, unsigned int prefix_len)
 {
     assert(hash != NULL && "NULL Hash hash pointer");
     assert(prefix != NULL && "NULL Hash prefix pointer");
@@ -68,7 +72,8 @@ error:
     return -1;
 }
 
-int Hash_PrefixedRandom(RandomState *rs, Hash *hash, Hash *prefix, int prefix_len)
+int 
+Hash_PrefixedRandom(RandomState *rs, Hash *hash, Hash *prefix, int prefix_len)
 {
     assert(rs != NULL && "NULL RandomState pointer");
     assert(hash != NULL && "NULL Hash hash pointer");
@@ -87,7 +92,8 @@ error:
     return -1;
 }
 
-int Hash_Equals(Hash *a, Hash *b)
+int 
+Hash_Equals(Hash *a, Hash *b)
 {
     assert(a != NULL && "NULL Hash pointer");
     assert(b != NULL && "NULL Hash pointer");
@@ -95,7 +101,8 @@ int Hash_Equals(Hash *a, Hash *b)
     return memcmp(a->value, b->value, HASH_BYTES) == 0;
 }
 
-int Hash_SharedPrefix(Hash *a, Hash *b)
+int 
+Hash_SharedPrefix(Hash *a, Hash *b)
 {
     unsigned int hi = 0;
 
@@ -131,7 +138,8 @@ done:
     return bi;
 }
 
-void Hash_Invert(Hash *hash)
+void 
+Hash_Invert(Hash *hash)
 {
     assert(HASH_BYTES % sizeof(int) == 0 && "Byte confusion");
     assert(HASH_BYTES % sizeof(int32_t) == 0 && "Size confusion");
@@ -146,7 +154,8 @@ void Hash_Invert(Hash *hash)
 
 /* Distance */
 
-Distance Hash_Distance(Hash *a, Hash *b)
+Distance 
+Hash_Distance(Hash *a, Hash *b)
 {
     assert(a != NULL && b != NULL && "NULL Hash pointer");
 
@@ -162,7 +171,8 @@ Distance Hash_Distance(Hash *a, Hash *b)
     return distance;
 }
 
-int Distance_Compare(Distance *a, Distance *b)
+int 
+Distance_Compare(Distance *a, Distance *b)
 {
     assert(a != NULL && b != NULL && "NULL Distance pointer");
 
@@ -173,7 +183,8 @@ int Distance_Compare(Distance *a, Distance *b)
 #define STRBUFLEN (HASHSTRLEN + 1)
 static char strbuf[STRBUFLEN];
 
-const char *Hash_Str(Hash *hash)
+const char *
+Hash_Str(Hash *hash)
 {
     char *src = hash->value;
     char *dst = strbuf;
@@ -193,7 +204,8 @@ const char *Hash_Str(Hash *hash)
     return strbuf;
 }
 
-uint32_t Hash_Hash(Hash *dht)
+uint32_t 
+Hash_Hash(Hash *dht)
 {
     assert(dht != NULL && "NULL Hash pointer");
     assert(HASH_BYTES % sizeof(uint32_t) == 0 && "Size confusion");

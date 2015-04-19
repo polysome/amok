@@ -10,7 +10,8 @@ struct PeerEntry {
     time_t time;
 };
 
-int Peer_Compare(Peer *a, Peer *b)
+int 
+Peer_Compare(Peer *a, Peer *b)
 {
     assert(a != NULL && "NULL Peer pointer");
     assert(b != NULL && "NULL Peer pointer");
@@ -18,19 +19,22 @@ int Peer_Compare(Peer *a, Peer *b)
     return (a->addr + a->port) - (b->addr + b->port);
 }
 
-uint32_t Peer_Hash(void *key)
+uint32_t 
+Peer_Hash(void *key)
 {
     assert(key != NULL && "NULL Peer pointer");
 
     return ((Peer *)key)->addr;
 }
 
-time_t GetTime()
+time_t 
+GetTime()
 {
     return time(NULL);
 }
 
-Peers *Peers_Create(Hash *info_hash)
+Peers *
+Peers_Create(Hash *info_hash)
 {
     assert(info_hash != NULL && "NULL Hash pointer");
 
@@ -51,7 +55,8 @@ error:
     return NULL;
 }
 
-void Peers_Destroy(Peers *peers)
+void 
+Peers_Destroy(Peers *peers)
 {
     if (peers == NULL)
         return;
@@ -61,7 +66,8 @@ void Peers_Destroy(Peers *peers)
     free(peers);
 }
 
-int Peers_AddPeer(Peers *peers, Peer *peer)
+int 
+Peers_AddPeer(Peers *peers, Peer *peer)
 {
     assert(peers != NULL && "NULL Peers pointer");
     assert(peer != NULL && "NULL Peer pointer");
@@ -96,7 +102,8 @@ error:
     return -1;
 }
 
-int TraverseAddPeer(DArray *array, HashmapNode *node)
+int 
+TraverseAddPeer(DArray *array, HashmapNode *node)
 {
     assert(array != NULL && "NULL DArray pointer");
     assert(node != NULL && "NULL HashmapNode pointer");
@@ -109,7 +116,8 @@ error:
     return -1;
 }
 
-int Peers_GetPeers(Peers *peers, DArray *result)
+int 
+Peers_GetPeers(Peers *peers, DArray *result)
 {
     assert(peers != NULL && "NULL Peers pointer");
     assert(result != NULL && "NULL DArray pointer");
@@ -124,7 +132,8 @@ error:
     return -1;
 }
 
-int FreePeersHashmapEntry(void *context, HashmapNode *node)
+int 
+FreePeersHashmapEntry(void *context, HashmapNode *node)
 {
     (void)(context);
     Peers_Destroy(node->data);
@@ -132,7 +141,8 @@ int FreePeersHashmapEntry(void *context, HashmapNode *node)
     return 0;
 }
 
-Hashmap *PeersHashmap_Create()
+Hashmap *
+PeersHashmap_Create()
 {
     Hashmap *hashmap = Hashmap_create(
             (Hashmap_compare)Distance_Compare,
@@ -144,7 +154,8 @@ error:
     return NULL;
 }
 
-void PeersHashmap_Destroy(Hashmap *hashmap)
+void 
+PeersHashmap_Destroy(Hashmap *hashmap)
 {
     if (hashmap == NULL)
         return;
@@ -153,7 +164,8 @@ void PeersHashmap_Destroy(Hashmap *hashmap)
     Hashmap_destroy(hashmap);
 }
 
-Peers *PeersHashmap_GetSetPeers(Hashmap *hashmap, Hash *info_hash)
+Peers *
+PeersHashmap_GetSetPeers(Hashmap *hashmap, Hash *info_hash)
 {
     assert(hashmap != NULL && "NULL Hashmap pointer");
     assert(info_hash != NULL && "NULL Hash pointer");
@@ -176,7 +188,8 @@ error:
     return NULL;
 }
 
-int PeersHashmap_GetPeers(Hashmap *hashmap, Hash *info_hash, DArray *result)
+int 
+PeersHashmap_GetPeers(Hashmap *hashmap, Hash *info_hash, DArray *result)
 {
     assert(hashmap != NULL && "NULL Hashmap pointer");
     assert(info_hash != NULL && "NULL Hash pointer");
@@ -192,7 +205,8 @@ error:
     return -1;
 }
 
-int PeersHashmap_AddPeer(Hashmap *hashmap, Hash *info_hash, Peer *peer)
+int 
+PeersHashmap_AddPeer(Hashmap *hashmap, Hash *info_hash, Peer *peer)
 {
     assert(hashmap != NULL && "NULL Hashmap pointer");
     assert(info_hash != NULL && "NULL Hash pointer");
@@ -208,7 +222,8 @@ error:
     return -1;
 }
 
-int Peers_Clean(Peers *peers, time_t cutoff)
+int 
+Peers_Clean(Peers *peers, time_t cutoff)
 {
     assert(peers != NULL && "NULL Peers pointer");
     assert(0 <= peers->count && peers->count <= MAXPEERS && "Bad Peers count");

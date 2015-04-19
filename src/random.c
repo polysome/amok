@@ -6,7 +6,8 @@
 
 #define RANDOM_STATE_LEN 256
 
-RandomState *RandomState_Create(unsigned int seed)
+RandomState *
+RandomState_Create(unsigned int seed)
 {
     RandomState *state = NULL;
 
@@ -23,7 +24,8 @@ error:
     return NULL;
 }
 
-void RandomState_Destroy(RandomState *randomState)
+void 
+RandomState_Destroy(RandomState *randomState)
 {
     if (randomState == NULL)
         return;
@@ -31,19 +33,19 @@ void RandomState_Destroy(RandomState *randomState)
     free(randomState);
 }
 
-int Random_Fill(RandomState *randomState, char *buf, size_t len)
+int 
+Random_Fill(RandomState *randomState, char *buf, size_t len)
 {
     size_t i = 0;
 
     for (i = 0; i + sizeof(int32_t) <= len; i += sizeof(int32_t))
     {
-        buf[i] = (int32_t)rand_r(&randomState->seed);
+        buf[i] = rand_r(&randomState->seed);
     }
 
     if (i == len) return 0;
 
-    int32_t r = 0;
-    r = (int32_t)rand_r(&randomState->seed);
+    int r = rand_r(&randomState->seed);
 
     while (i < len)
     {

@@ -6,7 +6,8 @@
 #include <dht/node.h>
 #include <lcthw/dbg.h>
 
-Bucket *Bucket_Create()
+Bucket *
+Bucket_Create()
 {
     Bucket *bucket = calloc(1, sizeof(Bucket));
     check_mem(bucket);
@@ -18,12 +19,14 @@ error:
     return NULL;
 }
 
-void Bucket_Destroy(Bucket *bucket)
+void 
+Bucket_Destroy(Bucket *bucket)
 {
     free(bucket);
 }
 
-int Bucket_ContainsNode(Bucket *bucket, Node *node)
+int 
+Bucket_ContainsNode(Bucket *bucket, Node *node)
 {
     assert(bucket != NULL && "NULL Bucket pointer");
     assert(node != NULL && "NULL Node pointer");
@@ -44,7 +47,8 @@ int Bucket_ContainsNode(Bucket *bucket, Node *node)
     return 0;
 }
 
-Node *Bucket_ReplaceBad(Bucket *bucket, Node *node)
+Node *
+Bucket_ReplaceBad(Bucket *bucket, Node *node)
 {
     assert(bucket != NULL && "NULL Bucket pointer");
     assert(node != NULL && "NULL Node pointer");
@@ -70,7 +74,8 @@ Node *Bucket_ReplaceBad(Bucket *bucket, Node *node)
     return NULL;
 }
 
-Node *Bucket_ReplaceQuestionable(Bucket *bucket, Node *node)
+Node *
+Bucket_ReplaceQuestionable(Bucket *bucket, Node *node)
 {
     assert(bucket != NULL && "NULL Bucket pointer");
     assert(node != NULL && "NULL Node pointer");
@@ -110,7 +115,8 @@ Node *Bucket_ReplaceQuestionable(Bucket *bucket, Node *node)
     return NULL;
 }
 
-int Bucket_IsFull(Bucket *bucket)
+int 
+Bucket_IsFull(Bucket *bucket)
 {
     assert(bucket != NULL && "NULL Bucket pointer");
     assert(bucket->count >= 0 && "Negative Bucket count");
@@ -119,7 +125,8 @@ int Bucket_IsFull(Bucket *bucket)
     return BUCKET_K == bucket->count;
 }
 
-int Bucket_AddNode(Bucket *bucket, Node *node)
+int 
+Bucket_AddNode(Bucket *bucket, Node *node)
 {
     assert(bucket != NULL && "NULL Bucket pointer");
     assert(node != NULL && "NULL Node pointer");

@@ -5,7 +5,8 @@
 #include <dht/node.h>
 #include <lcthw/dbg.h>
 
-NodeStatus Node_Status(Node *node, time_t time)
+NodeStatus 
+Node_Status(Node *node, time_t time)
 {
     assert(node != NULL && "NULL Node pointer");
 
@@ -29,7 +30,8 @@ NodeStatus Node_Status(Node *node, time_t time)
     return Bad;
 }
 
-Node *Node_Create(Hash *id)
+Node *
+Node_Create(Hash *id)
 {
     assert(id != NULL && "NULL Hash pointer");
 
@@ -43,7 +45,8 @@ error:
     return NULL;
 }
 
-Node *Node_Copy(Node *source)
+Node *
+Node_Copy(Node *source)
 {
     Node *copy = Node_Create(&source->id);
     check_mem(copy);
@@ -56,12 +59,14 @@ error:
     return NULL;
 }
 
-void Node_Destroy(Node *node)
+void 
+Node_Destroy(Node *node)
 {
     free(node);
 }
 
-int Node_DestroyOp(void *context, Node *node)
+int 
+Node_DestroyOp(void *context, Node *node)
 {
     (void)(context);
     free(node);
@@ -69,7 +74,8 @@ int Node_DestroyOp(void *context, Node *node)
     return 0;
 }
 
-void Node_DestroyBlock(Node **nodes, size_t count)
+void 
+Node_DestroyBlock(Node **nodes, size_t count)
 {
     assert(!(nodes == NULL && count != 0) && "Bad count for NULL Nodes block");
 
@@ -81,7 +87,8 @@ void Node_DestroyBlock(Node **nodes, size_t count)
     }
 }
 
-int Node_Same(Node *a, Node *b)
+int 
+Node_Same(Node *a, Node *b)
 {
     assert(a != NULL && "NULL Node pointer");
     assert(b != NULL && "NULL Node pointer");

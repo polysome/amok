@@ -10,18 +10,21 @@
 #include <dht/network.h>
 #include <dht/work.h>
 
-void *Dht_CreateClient(Hash id, uint32_t addr, uint16_t port, uint16_t peer_port)
+void *
+Dht_CreateClient(Hash id, uint32_t addr, uint16_t port, uint16_t peer_port)
 {
     Client *client = Client_Create(id, addr, port, peer_port);
     return client;
 }
 
-void Dht_DestroyClient(void *client)
+void 
+Dht_DestroyClient(void *client)
 {
     Client_Destroy((Client *)client);
 }
 
-int Dht_AddNode(void *client_, uint32_t addr, uint16_t port)
+int 
+Dht_AddNode(void *client_, uint32_t addr, uint16_t port)
 {
     Message *qping = NULL;
     Client *client = (Client *)client_;
@@ -41,7 +44,8 @@ error:
     return -1;
 }
 
-int Dht_Start(void *client_)
+int 
+Dht_Start(void *client_)
 {
     Client *client = (Client *)client_;
     check(client != NULL, "NULL client pointer");
@@ -57,7 +61,8 @@ error:
     return -1;
 }
 
-int Dht_Stop(void *client)
+int 
+Dht_Stop(void *client)
 {
     check(client != NULL, "NULL client pointer");
 
@@ -66,7 +71,8 @@ error:
     return -1;
 }
 
-int Dht_Process(void *client_)
+int 
+Dht_Process(void *client_)
 {
     Client *client = (Client *)client_;
     check(client != NULL, "NULL client pointer");
@@ -93,7 +99,8 @@ error:
     return -1;
 }
 
-int Dht_AddHook(void *client, Hook *hook)
+int 
+Dht_AddHook(void *client, Hook *hook)
 {
     check(client != NULL, "NULL client pointer");
 
@@ -113,7 +120,8 @@ error:
 
 /* bstring */
 
-bstring HexStr(char *data, size_t len)
+bstring 
+HexStr(char *data, size_t len)
 {
     assert(data != NULL && "NULL data pointer");
 
@@ -134,7 +142,8 @@ error:
     return NULL;
 }
 
-bstring Dht_HashStr(Hash *hash)
+bstring 
+Dht_HashStr(Hash *hash)
 {
     if (hash == NULL)
         return bformat("%*s", HASH_BYTES * 2, "(NULL HASH)");
@@ -142,7 +151,8 @@ bstring Dht_HashStr(Hash *hash)
     return HexStr(hash->value, HASH_BYTES);
 }
 
-bstring Dht_NodeStr(Node *node)
+bstring 
+Dht_NodeStr(Node *node)
 {
     if (node == NULL)
         return bfromcstr("(NULL Node)");
@@ -157,7 +167,8 @@ bstring Dht_NodeStr(Node *node)
     return str;
 }
 
-bstring Dht_PeerStr(Peer *peer)
+bstring 
+Dht_PeerStr(Peer *peer)
 {
     if (peer == NULL)
         return bfromcstr("(NULL Peer)");
@@ -167,7 +178,8 @@ bstring Dht_PeerStr(Peer *peer)
     return bformat("%15s:%-5d", inet_ntoa(addr), peer->port);
 }
 
-bstring Dht_FTokenStr(struct FToken ftoken)
+bstring 
+Dht_FTokenStr(struct FToken ftoken)
 {
     if (ftoken.data == NULL)
         return bfromcstr("(NULL ftoken)");
@@ -175,7 +187,8 @@ bstring Dht_FTokenStr(struct FToken ftoken)
     return HexStr(ftoken.data, ftoken.len);
 }
 
-bstring TidStr(char *data, size_t len)
+bstring 
+TidStr(char *data, size_t len)
 {
     if (data == NULL)
         return bfromcstr("(NULL tid)");
@@ -183,7 +196,8 @@ bstring TidStr(char *data, size_t len)
     return HexStr(data, len);
 }
 
-bstring Dht_MessageTypeStr(MessageType type)
+bstring 
+Dht_MessageTypeStr(MessageType type)
 {
     switch (type)
     {
@@ -201,7 +215,8 @@ bstring Dht_MessageTypeStr(MessageType type)
     }
 }
 
-bstring Dht_RERROR_Str(int code)
+bstring 
+Dht_RERROR_Str(int code)
 {
     switch (code)
     {
@@ -215,7 +230,8 @@ bstring Dht_RERROR_Str(int code)
 
 bstring DataStr(Message *message);
 
-bstring Dht_MessageStr(Message *message)
+bstring 
+Dht_MessageStr(Message *message)
 {
     if (message == NULL)
         return bfromcstr("(NULL Message)");
@@ -299,7 +315,8 @@ bstring DataStr(Message *message)
     }
 }
 
-bstring DataQFindNodeStr(Message *message)
+bstring 
+DataQFindNodeStr(Message *message)
 {
     bstring target = Dht_HashStr(message->data.qfindnode.target);
 
@@ -310,7 +327,8 @@ bstring DataQFindNodeStr(Message *message)
     return str;
 }
 
-bstring DataQGetPeersStr(Message *message)
+bstring 
+DataQGetPeersStr(Message *message)
 {
     bstring info_hash = Dht_HashStr(message->data.qgetpeers.info_hash);
 
@@ -321,7 +339,8 @@ bstring DataQGetPeersStr(Message *message)
     return str;
 }
 
-bstring DataQAnnouncePeerStr(Message *message)
+bstring 
+DataQAnnouncePeerStr(Message *message)
 {
     bstring info_hash = Dht_HashStr(message->data.qannouncepeer.info_hash);
     bstring ftoken = Dht_FTokenStr(message->data.qannouncepeer.token);
@@ -339,7 +358,8 @@ bstring DataQAnnouncePeerStr(Message *message)
     return str;
 }
 
-bstring DataRFindNodeStr(Message *message)
+bstring 
+DataRFindNodeStr(Message *message)
 {
     if (message->data.rfindnode.nodes == NULL)
         return bfromcstr("(NULL rfindnode.nodes)");
@@ -367,7 +387,8 @@ bstring DataRFindNodeStr(Message *message)
     return str;
 }
 
-bstring DataRGetPeersStr(Message *message)
+bstring 
+DataRGetPeersStr(Message *message)
 {
     if (message->data.rgetpeers.nodes != NULL)
     {
@@ -400,7 +421,8 @@ bstring DataRGetPeersStr(Message *message)
     return str;
 }
 
-bstring DataRErrorStr(Message *message)
+bstring 
+DataRErrorStr(Message *message)
 {
     bstring error = Dht_RERROR_Str(message->data.rerror.code);
 
@@ -414,7 +436,8 @@ bstring DataRErrorStr(Message *message)
     return str;
 }
 
-void *Dht_AddSearch(void *client, Hash info_hash)
+void *
+Dht_AddSearch(void *client, Hash info_hash)
 {
     check(client != NULL, "NULL client pointer");
 

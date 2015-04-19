@@ -5,7 +5,8 @@
 #include <dht/node.h>
 #include <lcthw/dbg.h>
 
-void Message_Destroy(Message *message)
+void 
+Message_Destroy(Message *message)
 {
     if (message == NULL)
         return;
@@ -48,7 +49,8 @@ void Message_Destroy(Message *message)
     free(message);
 }
 
-void Message_DestroyNodes(Message *message)
+void 
+Message_DestroyNodes(Message *message)
 {
     if (message == NULL)
         return;

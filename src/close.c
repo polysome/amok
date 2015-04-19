@@ -10,7 +10,8 @@ struct CloseNode
     Distance distance;
 };
 
-CloseNodes *CloseNodes_Create(Hash *id)
+CloseNodes *
+CloseNodes_Create(Hash *id)
 {
     CloseNodes *nodes = malloc(sizeof(CloseNodes));
     check_mem(nodes);
@@ -25,7 +26,8 @@ error:
     return NULL;
 }
 
-void CloseNodes_Destroy(CloseNodes *close)
+void 
+CloseNodes_Destroy(CloseNodes *close)
 {
     if (close == NULL)
         return;
@@ -39,7 +41,8 @@ void CloseNodes_Destroy(CloseNodes *close)
     free(close);
 }
 
-DArray *CloseNodes_GetNodes(CloseNodes *close)
+DArray *
+CloseNodes_GetNodes(CloseNodes *close)
 {
     assert(close != NULL && "NULL CloseNodes pointer");
 
@@ -67,7 +70,8 @@ error:
 int FindIndex(DArray *close, Distance *distance);
 void ShiftFrom(DArray *close, int i);
 
-int CloseNodes_Add(CloseNodes *close, Node *node)
+int 
+CloseNodes_Add(CloseNodes *close, Node *node)
 {
     assert(close != NULL && "NULL CloseNodes pointer");
     assert(node != NULL && "NULL Node pointer");
@@ -95,7 +99,8 @@ error:
     return -1;
 }
 
-int FindIndex(DArray *close, Distance *distance)
+int 
+FindIndex(DArray *close, Distance *distance)
 {
     assert(close != NULL && "NULL DArray pointer");
     assert(distance != NULL && "NULL Distance pointer");
@@ -117,7 +122,8 @@ int FindIndex(DArray *close, Distance *distance)
     return -1;
 }
 
-void ShiftFrom(DArray *close, int from)
+void 
+ShiftFrom(DArray *close, int from)
 {
     assert(close != NULL && "NULL DArray pointer");
     assert(BUCKET_K - 1 < DArray_max(close) && "Too small DArray");

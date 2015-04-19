@@ -9,7 +9,8 @@
 #include <dht/search.h>
 #include <dht/table.h>
 
-ReplyHandler GetReplyHandler(MessageType type)
+ReplyHandler 
+GetReplyHandler(MessageType type)
 {
     switch (type)
     {
@@ -24,7 +25,8 @@ ReplyHandler GetReplyHandler(MessageType type)
     }
 }
 
-QueryHandler GetQueryHandler(MessageType type)
+QueryHandler 
+GetQueryHandler(MessageType type)
 {
     switch (type)
     {
@@ -38,7 +40,8 @@ QueryHandler GetQueryHandler(MessageType type)
     }
 }
 
-int HandleReply(Client *client, Message *message)
+int 
+HandleReply(Client *client, Message *message)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(message != NULL && "NULL Message pointer");
@@ -54,7 +57,8 @@ error:
     return -1;
 }
 
-int HandleRError(Client *client, Message *message)
+int 
+HandleRError(Client *client, Message *message)
 {
     log_err("Error reply %s:%d %d %s",
             inet_ntoa(message->node.addr),
@@ -64,7 +68,8 @@ int HandleRError(Client *client, Message *message)
     return HandleReply(client, message);
 }
 
-int HandleUnknown(Client *client, Message *message)
+int 
+HandleUnknown(Client *client, Message *message)
 {
     (void)client;
 
@@ -74,7 +79,8 @@ int HandleUnknown(Client *client, Message *message)
     return 0;
 }
 
-int AddSearchNodes(Client *client, Search *search, Node **nodes, size_t count);
+int 
+AddSearchNodes(Client *client, Search *search, Node **nodes, size_t count);
 
 int HandleRPing(Client *client, Message *message)
 {
@@ -100,7 +106,8 @@ error:
     return -1;
 }
 
-int HandleRFindNode(Client *client, Message *message)
+int 
+HandleRFindNode(Client *client, Message *message)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(message != NULL && "NULL Message pointer");
@@ -131,7 +138,8 @@ error:
     return -1;
 }
 
-int HandleRGetPeers(Client *client, Message *message)
+int 
+HandleRGetPeers(Client *client, Message *message)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(message != NULL && "NULL Message pointer");
@@ -185,7 +193,8 @@ error:
     return -1;
 }    
 
-int HandleRAnnouncePeer(Client *client, Message *message)
+int 
+HandleRAnnouncePeer(Client *client, Message *message)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(message != NULL && "NULL Message pointer");
@@ -214,7 +223,8 @@ error:
 }
 
 /* AddSearchNodes NULLs the added nodes. */
-int AddSearchNodes(Client *client, Search *search, Node **nodes, size_t count)
+int 
+AddSearchNodes(Client *client, Search *search, Node **nodes, size_t count)
 {
     assert(search != NULL && "NULL Search pointer");
     assert(nodes != NULL && "NULL pointer to Nodes pointer");
@@ -251,7 +261,8 @@ error:
     return -1;
 }
 
-Message *HandleQFindNode(Client *client, Message *query)
+Message *
+HandleQFindNode(Client *client, Message *query)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(query != NULL && "NULL Message pointer");
@@ -276,7 +287,8 @@ error:
     return NULL;
 }
 
-Message *HandleQPing(Client *client, Message *query)
+Message *
+HandleQPing(Client *client, Message *query)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(query != NULL && "NULL Message pointer");
@@ -293,7 +305,8 @@ error:
     return NULL;
 }
 
-Message *HandleQAnnouncePeer(Client *client, Message *query)
+Message *
+HandleQAnnouncePeer(Client *client, Message *query)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(query != NULL && "NULL Message pointer");
@@ -326,7 +339,8 @@ error:
     return NULL;
 }
 
-Message *HandleQGetPeers(Client *client, Message *query)
+Message *
+HandleQGetPeers(Client *client, Message *query)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(query != NULL && "NULL Message pointer");
@@ -367,7 +381,8 @@ error:
     return NULL;
 }
 
-Message *HandleInvalidQuery(Client *client, Message *query)
+Message *
+HandleInvalidQuery(Client *client, Message *query)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(query != NULL && "NULL Message pointer");
@@ -384,7 +399,8 @@ error:
     return NULL;
 }
 
-int HandleInvalidReply(Client *client, Message *reply)
+int 
+HandleInvalidReply(Client *client, Message *reply)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(reply != NULL && "NULL Message pointer");

@@ -5,7 +5,8 @@
 #include <dht/search.h>
 #include <dht/work.h>
 
-int Client_HandleSearches(Client *client)
+int 
+Client_HandleSearches(Client *client)
 {
     assert(client != NULL && "NULL Client pointer");
 
@@ -22,7 +23,8 @@ error:
     return -1;
 }
 
-void Client_CleanSearches(Client *client)
+void 
+Client_CleanSearches(Client *client)
 {
     assert(client != NULL && "NULL Client pointer");
 
@@ -44,7 +46,8 @@ void Client_CleanSearches(Client *client)
     DArray_compact(client->searches);
 }
 
-int Client_HandleMessages(Client *client)
+int 
+Client_HandleMessages(Client *client)
 {
     assert(client != NULL && "NULL Client pointer");
 
@@ -110,7 +113,8 @@ error:
     return -1;
 }
 
-int Client_Send(Client *client, MessageQueue *queue)
+int 
+Client_Send(Client *client, MessageQueue *queue)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(queue != NULL && "NULL MessageQueue pointer");
@@ -134,7 +138,8 @@ error:
     return -1;
 }
 
-int Client_Receive(Client *client)
+int 
+Client_Receive(Client *client)
 {
     assert(client != NULL && "NULL Client pointer");
 

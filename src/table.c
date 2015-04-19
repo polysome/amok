@@ -6,7 +6,8 @@
 #include <dht/table.h>
 #include <lcthw/dbg.h>
 
-Table *Table_Create(Hash *id)
+Table *
+Table_Create(Hash *id)
 {
     assert(id != NULL && "NULL Hash id pointer");
 
@@ -27,7 +28,8 @@ error:
     return NULL;
 }
 
-void Table_Destroy(Table *table)
+void 
+Table_Destroy(Table *table)
 {
     if (table == NULL)
         return;
@@ -41,12 +43,14 @@ void Table_Destroy(Table *table)
     free(table);
 }
 
-void Table_DestroyNodes(Table *table)
+void 
+Table_DestroyNodes(Table *table)
 {
     Table_ForEachNode(table, NULL, Node_DestroyOp);
 }
 
-int Table_HasShiftableNodes(Hash *id, Bucket *bucket, Node *node)
+int 
+Table_HasShiftableNodes(Hash *id, Bucket *bucket, Node *node)
 {
     assert(id != NULL && "NULL Hash pointer");
     assert(bucket != NULL && "NULL Bucket pointer");
@@ -72,7 +76,8 @@ int Table_HasShiftableNodes(Hash *id, Bucket *bucket, Node *node)
     return 0;
 }
 
-int Table_IsLastBucket(Table *table, Bucket *bucket)
+int 
+Table_IsLastBucket(Table *table, Bucket *bucket)
 {
     assert(table != NULL && "NULL Table pointer");
     assert(bucket != NULL && "NULL Bucket pointer");
@@ -82,14 +87,16 @@ int Table_IsLastBucket(Table *table, Bucket *bucket)
     return table->end - 1 == bucket->index;
 }
 
-int Table_CanAddBucket(Table *table)
+int 
+Table_CanAddBucket(Table *table)
 {
     assert(table != NULL && "NULL Table pointer");
 
     return table->end < MAX_TABLE_BUCKETS;
 }
 
-int Table_ShiftBucketNodes(Table *table, Bucket *bucket)
+int 
+Table_ShiftBucketNodes(Table *table, Bucket *bucket)
 {
     assert(table != NULL && "NULL Table pointer");
     assert(bucket != NULL && "NULL Bucket pointer");
@@ -124,7 +131,8 @@ error:
     return -1;
 }
 
-Table_InsertNodeResult Table_InsertNode(Table *table, Node *node)
+Table_InsertNodeResult 
+Table_InsertNode(Table *table, Node *node)
 {
     assert(table != NULL && "NULL Table pointer");
     assert(node != NULL && "NULL Node pointer");
@@ -184,7 +192,8 @@ error:
     { .rc = ERROR, .bucket = NULL, .replaced = NULL};
 }
 
-int Table_CopyAndAddNode(Table *dest, Node *node)
+int 
+Table_CopyAndAddNode(Table *dest, Node *node)
 {
     assert(dest != NULL && "NULL Table pointer");
     assert(node != NULL && "NULL Node pointer");
@@ -217,7 +226,8 @@ error:
     return -1;
 }
 
-Bucket *Table_AddBucket(Table *table)
+Bucket *
+Table_AddBucket(Table *table)
 {
     assert(table->end < MAX_TABLE_BUCKETS && "Adding one bucket too many");
 
@@ -232,7 +242,8 @@ error:
     return NULL;
 }
 
-Bucket *Table_FindBucket(Table *table, Hash *id)
+Bucket *
+Table_FindBucket(Table *table, Hash *id)
 {
     assert(table != NULL && "NULL Table pointer");
     assert(id != NULL && "NULL Hash pointer");
@@ -246,7 +257,8 @@ Bucket *Table_FindBucket(Table *table, Hash *id)
     return table->buckets[i];
 }
 
-int Table_ForEachNode(Table *table, void *context, NodeOp operate)
+int 
+Table_ForEachNode(Table *table, void *context, NodeOp operate)
 {
     assert(table != NULL && "NULL Table pointer");
     assert(operate != NULL && "NULL function pointer");
@@ -276,7 +288,8 @@ error:
     return -1;
 }
 
-int Table_ForEachCloseNode(Table *table, void *context, NodeOp operate)
+int 
+Table_ForEachCloseNode(Table *table, void *context, NodeOp operate)
 {
     assert(table != NULL && "NULL Table pointer");
     assert(operate != NULL && "NULL function pointer");
@@ -300,7 +313,8 @@ error:
     return -1;
 }
 
-Node *Table_FindNode(Table *table, Hash *id)
+Node *
+Table_FindNode(Table *table, Hash *id)
 {
     assert(table != NULL && "NULL Table pointer");
     assert(id != NULL && "NULL Hash pointer");
@@ -321,12 +335,14 @@ Node *Table_FindNode(Table *table, Hash *id)
     return NULL;
 }
 
-int CloseNodes_AddOp(void *close, Node *node)
+int 
+CloseNodes_AddOp(void *close, Node *node)
 {
     return CloseNodes_Add((CloseNodes *)close, node);
 }
 
-DArray *Table_GatherClosest(Table *table, Hash *id)
+DArray *
+Table_GatherClosest(Table *table, Hash *id)
 {
     assert(table != NULL && "NULL Table pointer");
     assert(id != NULL && "NULL Hash pointer");
@@ -348,7 +364,8 @@ error:
     return NULL;
 }
 
-int Table_MarkReply(Table *table, Message *message)
+int 
+Table_MarkReply(Table *table, Message *message)
 {
     assert(table != NULL && "NULL Table pointer");
     assert(message != NULL && "NULL Message pointer");
@@ -385,7 +402,8 @@ error:
     return -1;
 }
 
-int Table_MarkQuery(Table *table, Node *node)
+int 
+Table_MarkQuery(Table *table, Node *node)
 {
     assert(table != NULL && "NULL Table pointer");
     assert(node != NULL && "NULL Node pointer");
@@ -410,7 +428,8 @@ error:
     return -1;
 }
 
-int AppendLine(bstring dump, Node *node)
+int 
+AppendLine(bstring dump, Node *node)
 {
     assert(dump != NULL && "NULL bstring");
     assert(node != NULL && "NULL Node pointer");
@@ -427,7 +446,8 @@ error:
     return rc;
 }
 
-bstring Table_Dump(Table *table)
+bstring 
+Table_Dump(Table *table)
 {
     assert(table != NULL && "NULL Table pointer");
 
@@ -447,13 +467,15 @@ error:
     return NULL;
 }
 
-int IsHexCh(char ch)
+int 
+IsHexCh(char ch)
 {
     return ('0' <= ch && ch <= '9')
         || ('a' <= ch && ch <= 'f');
 }
 
-int HexVal(char ch, char *val)
+int 
+HexVal(char ch, char *val)
 {
     if ('0' <= ch && ch <= '9')
     {
@@ -470,7 +492,8 @@ int HexVal(char ch, char *val)
     return -1;
 }
 
-int ReadLine(bstring line, Node *result)
+int 
+ReadLine(bstring line, Node *result)
 {
     struct bstrList *list = bsplit(line, ' ');
     check(list != NULL, "bsplit failed");
@@ -515,7 +538,8 @@ error:
     return -1;
 }
 
-Table *Table_Read(bstring dump)
+Table *
+Table_Read(bstring dump)
 {
     Node tmp = {{{ 0 }}};
     Node *node = NULL;
