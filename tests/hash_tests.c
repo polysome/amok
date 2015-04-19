@@ -8,7 +8,7 @@ char *test_Hash_Clone()
     int i = 0;
     for (i = 0; i < HASH_BYTES; i++)
     {
-	orig->value[i] = i;
+        orig->value[i] = i;
     }
 
     Hash *clone = Hash_Clone(orig);
@@ -73,13 +73,13 @@ char *test_Hash_Prefix()
     int i = 0;
     for (i = 0; i <= HASH_BITS; i++)
     {
-	Hash result = inv;
+        Hash result = inv;
 
         int rc = Hash_Prefix(&result, &prefix, i);
         mu_assert(rc == 0, "Hash_Prefix failed");
 
-	int shared = Hash_SharedPrefix(&result, &prefix);
-	mu_assert(shared == i, "Wrong prefix");
+        int shared = Hash_SharedPrefix(&result, &prefix);
+        mu_assert(shared == i, "Wrong prefix");
     }
 
     return NULL;
@@ -88,25 +88,25 @@ char *test_Hash_Prefix()
 char *test_Hash_PrefixedRandom()
 {
     Hash prefix = {{ 0 }};
-    
+
     int i = 0;
     for (i = 0; i < HASH_BYTES; i++)
     {
-	prefix.value[i] = i;
+        prefix.value[i] = i;
     }
 
     RandomState *rs = RandomState_Create(0);
 
     for (i = 0; i <= HASH_BITS; i++)
     {
-	Hash random = {{ 0 }};
+        Hash random = {{ 0 }};
 
         int rc = Hash_PrefixedRandom(rs, &random, &prefix, i);
         mu_assert(rc == 0, "Hash_PrefixedRandom failed");
 
-	int shared = Hash_SharedPrefix(&prefix, &random);
+        int shared = Hash_SharedPrefix(&prefix, &random);
 
-	mu_assert(shared >= i, "Wrong prefix");
+        mu_assert(shared >= i, "Wrong prefix");
     }
 
     RandomState_Destroy(rs);

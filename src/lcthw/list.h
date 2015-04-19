@@ -36,8 +36,8 @@ void *List_remove(List *list, ListNode *node);
 void List_remove_all(List *list, void *value);
 
 #define LIST_FOREACH(L, S, M, V) ListNode *_next = NULL;\
-    ListNode *V = NULL;\
-    for(V = L->S, _next = V != NULL ? V->M : NULL;   \
+                                                   ListNode *V = NULL;\
+for(V = L->S, _next = V != NULL ? V->M : NULL;   \
         V != NULL;\
         V = _next, _next = _next != NULL ? _next->M : NULL)
 

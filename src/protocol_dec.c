@@ -38,21 +38,21 @@ Message *Message_Decode(char *data, size_t len, struct PendingResponses *pending
 
     switch(y)
     {
-    case 'q':
-        rc = DecodeQuery(message, dict);
-        check(rc == 0, "DecodeQuery failed");
-	break;
-    case 'r':
-        rc = DecodeResponse(message, dict, pending);
-        check(rc == 0, "DecodeResponse failed");
-	break;
-    case 'e':
-        rc = DecodeError(message, dict);
-        check(rc == 0, "DecodeError failed");
-	break;
-    default:
-        message->errors |= MERROR_UNKNOWN_TYPE;
-	break;
+        case 'q':
+            rc = DecodeQuery(message, dict);
+            check(rc == 0, "DecodeQuery failed");
+            break;
+        case 'r':
+            rc = DecodeResponse(message, dict, pending);
+            check(rc == 0, "DecodeResponse failed");
+            break;
+        case 'e':
+            rc = DecodeError(message, dict);
+            check(rc == 0, "DecodeError failed");
+            break;
+        default:
+            message->errors |= MERROR_UNKNOWN_TYPE;
+            break;
     }
 
     BNode_Destroy(dict);
@@ -120,26 +120,26 @@ void SetQueryType(Message *message, BNode *dict)
 
     if (BNode_StringEquals("ping", qVal))
     {
-	message->type = QPing;
-	return;
+        message->type = QPing;
+        return;
     }
 
     if (BNode_StringEquals("find_node", qVal))
     {
-	message->type = QFindNode;
-	return;
+        message->type = QFindNode;
+        return;
     }
 
     if (BNode_StringEquals("get_peers", qVal))
     {
-	message->type = QGetPeers;
-	return;
+        message->type = QGetPeers;
+        return;
     }
 
     if (BNode_StringEquals("announce_peer", qVal))
     {
-	message->type = QAnnouncePeer;
-	return;
+        message->type = QAnnouncePeer;
+        return;
     }
 
 invalid:
@@ -219,7 +219,7 @@ int SetQueryData(Message *message, BNode *dict)
 
     if (message->type == QPing)
     {
-	return 0;
+        return 0;
     }
 
     BNode *arguments = BNode_GetValue(dict, "a", 1);
@@ -232,17 +232,17 @@ int SetQueryData(Message *message, BNode *dict)
 
     switch (message->type)
     {
-    case QFindNode:
-	return SetQueryFindNodeData(message, arguments);
-        break;
-    case QGetPeers:
-	return SetQueryGetPeersData(message, arguments);
-        break;
-    case QAnnouncePeer:
-	return SetQueryAnnouncePeerData(message, arguments);
-        break;
-    default:
-        break;
+        case QFindNode:
+            return SetQueryFindNodeData(message, arguments);
+            break;
+        case QGetPeers:
+            return SetQueryGetPeersData(message, arguments);
+            break;
+        case QAnnouncePeer:
+            return SetQueryAnnouncePeerData(message, arguments);
+            break;
+        default:
+            break;
     }
 
     log_err("Unhandled Query MessageType");
@@ -327,9 +327,9 @@ int SetQueryAnnouncePeerData(Message *message, BNode *arguments)
     BNode *port = BNode_GetValue(arguments, "port", 4);
 
     if (port == NULL
-        || port->type != BInteger
-        || port->value.integer < 0
-        || port->value.integer > 0xffff)
+            || port->type != BInteger
+            || port->value.integer < 0
+            || port->value.integer > 0xffff)
     {
         message->errors |= MERROR_INVALID_DATA;
         return 0;
@@ -448,7 +448,7 @@ int SetResponseData(Message *message, BNode *dict)
 
     if (message->type == RPing || message->type == RAnnouncePeer)
     {
-	return 0;
+        return 0;
     }
 
     BNode *arguments = BNode_GetValue(dict, "r", 1);
@@ -461,13 +461,13 @@ int SetResponseData(Message *message, BNode *dict)
 
     switch (message->type)
     {
-    case RFindNode:
-	return SetResponseFindNodeData(message, arguments);
-    case RGetPeers:
-	return SetResponseGetPeersData(message, arguments);
-    default:
-        log_err("Unhandled response message type %d", message->type);
-        return -1;
+        case RFindNode:
+            return SetResponseFindNodeData(message, arguments);
+        case RGetPeers:
+            return SetResponseGetPeersData(message, arguments);
+        default:
+            log_err("Unhandled response message type %d", message->type);
+            return -1;
     }
 }
 
@@ -497,7 +497,7 @@ int SetCompactNodeInfo(Message *message, BNode *string)
 {
     assert(message != NULL && "NULL Message pointer");
     assert((message->type == RFindNode || message->type == RGetPeers)
-           && "Wrong message type");
+            && "Wrong message type");
     assert(string != NULL && "NULL BNode string pointer");
     assert(string->type == BString && "Not a BString");
 
@@ -509,7 +509,7 @@ int SetCompactNodeInfo(Message *message, BNode *string)
 
     RFindNodeData *data = &message->data.rfindnode;
     char *nodes = string->value.string;
-    
+
     data->count = string->count / COMPACTNODE_BYTES;
     data->nodes = calloc(data->count, sizeof(Node *));
     check_mem(data->nodes);
@@ -520,10 +520,10 @@ int SetCompactNodeInfo(Message *message, BNode *string)
         data->nodes[i] = Node_Create((Hash *)nodes);
         check_mem(data->nodes[i]);
         data->nodes[i]->addr.s_addr = ntohl(*(uint32_t *)(nodes
-                                                         + HASH_BYTES));
-	data->nodes[i]->port = ntohs(*(uint16_t *)(nodes
-                                                  + HASH_BYTES
-                                                  + sizeof(uint32_t)));
+                    + HASH_BYTES));
+        data->nodes[i]->port = ntohs(*(uint16_t *)(nodes
+                    + HASH_BYTES
+                    + sizeof(uint32_t)));
     }
 
     return 0;
@@ -578,16 +578,16 @@ int SetResponseGetPeersData(Message *message, BNode *arguments)
     }
     else if (values != NULL && values->type == BList)
     {
-	return SetCompactPeerInfo(message, values);
+        return SetCompactPeerInfo(message, values);
     }
     else if (nodes != NULL && nodes->type == BString)
     {
         int rc = SetCompactNodeInfo(message, nodes);
-	check(rc == 0, "Failed to get compact node info");
+        check(rc == 0, "Failed to get compact node info");
     }
     else
     {
-	message->errors |= MERROR_INVALID_DATA;
+        message->errors |= MERROR_INVALID_DATA;
     }
 
     return 0;
@@ -618,7 +618,7 @@ int SetCompactPeerInfo(Message *message, BNode *list)
 
     for (i = 0; i < data->count; i++, peer++)
     {
-	BNode *string = list->value.nodes[i];
+        BNode *string = list->value.nodes[i];
 
         if (string->type != BString || string->count != COMPACTPEER_BYTES)
         {
@@ -626,8 +626,8 @@ int SetCompactPeerInfo(Message *message, BNode *list)
             return 0;
         }
 
-	peer->addr = ntohl(*(uint32_t *)string->value.string);
-	peer->port = ntohs(*(uint16_t *)(string->value.string + sizeof(uint32_t)));
+        peer->addr = ntohl(*(uint32_t *)string->value.string);
+        peer->port = ntohs(*(uint16_t *)(string->value.string + sizeof(uint32_t)));
     }
 
     return 0;
@@ -661,7 +661,7 @@ int DecodeError(Message *message, BNode *dict)
     }
 
     BNode *code = eVal->value.nodes[0],
-        *error_msg = eVal->value.nodes[1];
+          *error_msg = eVal->value.nodes[1];
 
     if (code->type == BInteger)
     {

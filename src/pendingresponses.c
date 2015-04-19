@@ -17,8 +17,8 @@ HashmapPendingResponses *HashmapPendingResponses_Create()
     pending->addPendingResponse = HashmapPendingResponses_Add;
 
     pending->hashmap = Hashmap_create(
-        (Hashmap_compare)PendingResponse_Compare,
-        (Hashmap_hash)PendingResponse_Hash);
+            (Hashmap_compare)PendingResponse_Compare,
+            (Hashmap_hash)PendingResponse_Hash);
     check_mem(pending->hashmap);
 
     return pending;
@@ -30,7 +30,7 @@ void HashmapPendingResponses_Destroy(HashmapPendingResponses *pending)
 {
     if (pending == NULL)
         return;
-    
+
     Hashmap_traverse(pending->hashmap, NULL, Hashmap_freeNodeData);
     Hashmap_destroy(pending->hashmap);
     free(pending);
@@ -44,9 +44,9 @@ uint32_t PendingResponse_Hash(tid_t *key)
 
     for (i = 0; i < sizeof(uint32_t); i += sizeof(tid_t))
     {
-	hash += *key;
-	hash += (hash << 10);
-	hash ^= (hash >> 6);
+        hash += *key;
+        hash += (hash << 10);
+        hash ^= (hash >> 6);
     }
 
     hash += (hash << 3);
@@ -74,8 +74,8 @@ int HashmapPendingResponses_Add(void *responses, PendingResponse entry)
     *mentry = entry;
 
     int rc = Hashmap_set(((HashmapPendingResponses *)responses)->hashmap,
-                         &mentry->tid,
-                         mentry);
+            &mentry->tid,
+            mentry);
     check(rc == 0, "Hashmap_set failed");
 
     return 0;
@@ -83,7 +83,7 @@ error:
     free(mentry);
     return -1;
 }
-    
+
 PendingResponse HashmapPendingResponses_Remove(void *responses, char *tid, int *rc)
 {
     assert(responses != NULL && "NULL HashmapPendingResponses pointer");

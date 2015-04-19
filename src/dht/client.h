@@ -31,18 +31,18 @@ typedef struct Client {
 } Client;
 
 Client *Client_Create(Hash id,
-                      uint32_t addr,
-                      uint16_t port,
-                      uint16_t peer_port);
+        uint32_t addr,
+        uint16_t port,
+        uint16_t peer_port);
 void Client_Destroy(Client *client);
 
 /* Make the Token required for a valid announce by the from Node */
 Token Client_MakeToken(Client *client, Node *from);
 /* Validate the Node's token against the Client's secrets */
 int Client_IsValidToken(Client *client,
-                        Node *from,
-                        char *token,
-                        size_t token_len);
+        Node *from,
+        char *token,
+        size_t token_len);
 /* Create a new secret and shift the past ones */
 int Client_NewSecret(Client *client);
 
@@ -54,10 +54,9 @@ int Client_GetPeers(Client *client, Hash *info_hash, DArray **peers);
  * Returns 0 on success, -1 on failure. */
 int Client_AddPeer(Client *client, Hash *info_hash, Peer *peer);
 
-typedef struct Search Search;
-
+struct Search;
 /* Adds a new Search for target to client. */
-Search *Client_AddSearch(Client *client, Hash *target);
+struct Search *Client_AddSearch(Client *client, Hash *target);
 
 /* Notes an invalid message from the node. For blacklisting. */
 int Client_MarkInvalidMessage(Client *client, Node *from);

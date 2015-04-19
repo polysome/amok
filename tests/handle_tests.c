@@ -77,10 +77,10 @@ char *test_HandleQGetPeers_nodes()
     mu_assert(SameT(qgetpeers, reply), "Wrong t");
     mu_assert(HasRecentQuery(client->table, from_id), "Node query_time not set");
     mu_assert(Client_IsValidToken(client,
-                                  &from->node,
-                                  reply->data.rgetpeers.token.data,
-                                  reply->data.rgetpeers.token.len),
-              "Invalid token");
+                &from->node,
+                reply->data.rgetpeers.token.data,
+                reply->data.rgetpeers.token.len),
+            "Invalid token");
     mu_assert(reply->data.rgetpeers.nodes != NULL, "No nodes");
     mu_assert(reply->data.rgetpeers.count == 1, "Wrong count");
     mu_assert(reply->data.rgetpeers.values == NULL, "Unwanted peers");
@@ -114,10 +114,10 @@ char *test_HandleQGetPeers_peers()
     mu_assert(SameT(qgetpeers, reply), "Wrong t");
     mu_assert(HasRecentQuery(client->table, from_id), "Node query_time not set");
     mu_assert(Client_IsValidToken(client,
-                                  &from->node,
-                                  reply->data.rgetpeers.token.data,
-                                  reply->data.rgetpeers.token.len),
-              "Invalid token");
+                &from->node,
+                reply->data.rgetpeers.token.data,
+                reply->data.rgetpeers.token.len),
+            "Invalid token");
     mu_assert(reply->data.rgetpeers.values != NULL, "No peers");
     mu_assert(reply->data.rgetpeers.count == 1, "Wrong count");
     mu_assert(reply->data.rgetpeers.nodes == NULL, "Unwanted nodes");
@@ -142,10 +142,10 @@ char *test_HandleQAnnouncePeer()
     Token token = Client_MakeToken(client, &from->node);
 
     Message *query = Message_CreateQAnnouncePeer(from,
-                                                 &from->node,
-                                                 &target_id,
-                                                 token.value,
-                                                 HASH_BYTES);
+            &from->node,
+            &target_id,
+            token.value,
+            HASH_BYTES);
 
     Message *reply = (GetQueryHandler(query->type))(client, query);
 
@@ -187,10 +187,10 @@ char *test_HandleQAnnouncePeer_badtoken()
     Token token = { "bad token" };
 
     Message *query = Message_CreateQAnnouncePeer(from,
-                                                 &from->node,
-                                                 &target_id,
-                                                 token.value,
-                                                 HASH_BYTES);
+            &from->node,
+            &target_id,
+            token.value,
+            HASH_BYTES);
 
     Message *reply = (GetQueryHandler(query->type))(client, query);
 
@@ -268,9 +268,9 @@ char *test_HandleRFindNode()
     mu_assert(search->peers->count == 0, "Wrong peers count on search");
 
     mu_assert(HasRecentReply(client->table, from->node.id),
-              "Reply not marked in client->table");
+            "Reply not marked in client->table");
     mu_assert(HasRecentReply(search->table, from->node.id),
-              "Reply not marked in search->table");
+            "Reply not marked in search->table");
     DArray_destroy(found);
     Search_Destroy(search);
     Client_Destroy(client);
@@ -320,10 +320,10 @@ char *test_HandleRAnnouncePeer()
     Token token = Client_MakeToken(client, &from->node);
 
     Message *query = Message_CreateQAnnouncePeer(client,
-                                                 &from->node,
-                                                 &info_hash,
-                                                 token.value,
-                                                 HASH_BYTES);
+            &from->node,
+            &info_hash,
+            token.value,
+            HASH_BYTES);
 
     Message *reply = Message_CreateRAnnouncePeer(from, query);
     reply->context = search; /* Would be set when decoding */
@@ -365,8 +365,8 @@ char *test_HandleRGetPeers_nodes()
     }
 
     Message *qgetpeers = Message_CreateQGetPeers(client,
-                                                 &client->node,
-                                                 &target_id);
+            &client->node,
+            &target_id);
 
     Message *rgetpeers = HandleQGetPeers(from, qgetpeers);
 
@@ -382,7 +382,7 @@ char *test_HandleRGetPeers_nodes()
     mu_assert(rc == 0, "HandleRGetPeers failed");
 
     mu_assert(search->table->buckets[0]->count == nodes_count + 1, /* +1 for from node */
-              "Found nodes missing.");
+            "Found nodes missing.");
     mu_assert(search->peers->count == 0, "No peers expected");
 
     Client_Destroy(client);
@@ -420,8 +420,8 @@ char *test_HandleRGetPeers_peers()
     }
 
     Message *qgetpeers = Message_CreateQGetPeers(client,
-                                                 &from->node,
-                                                 &target_id);
+            &from->node,
+            &target_id);
 
     qgetpeers->node = client->node;
     Message *rgetpeers = HandleQGetPeers(from, qgetpeers);

@@ -1,6 +1,6 @@
 WFLAGS=-Wall -Wextra -Werror -Wno-missing-field-initializers
 CFLAGS=-g -O2 -Isrc -rdynamic -DNDEBUG $(WFLAGS) $(OPTFLAGS)
-LIBS=-lcrypto -ldl $(OPTLIBS)
+LIBS=-lcrypto $(OPTLIBS)
 PREFIX?=/usr/local
 
 DHTHEADERS=$(wildcard src/dht/*.h)

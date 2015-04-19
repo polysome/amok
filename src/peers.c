@@ -115,8 +115,8 @@ int Peers_GetPeers(Peers *peers, DArray *result)
     assert(result != NULL && "NULL DArray pointer");
 
     int rc = Hashmap_traverse(peers->hashmap,
-                              result,
-                              (Hashmap_traverse_cb)TraverseAddPeer);
+            result,
+            (Hashmap_traverse_cb)TraverseAddPeer);
     check(rc == 0, "Hashmap_traverse failed");
 
     return 0;
@@ -135,8 +135,8 @@ int FreePeersHashmapEntry(void *context, HashmapNode *node)
 Hashmap *PeersHashmap_Create()
 {
     Hashmap *hashmap = Hashmap_create(
-        (Hashmap_compare)Distance_Compare,
-        (Hashmap_hash)Hash_Hash);
+            (Hashmap_compare)Distance_Compare,
+            (Hashmap_hash)Hash_Hash);
     check_mem(hashmap);
 
     return hashmap;

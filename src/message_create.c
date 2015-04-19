@@ -66,10 +66,10 @@ error:
 }
 
 Message *Message_CreateQAnnouncePeer(Client *client,
-                                     Node *to,
-                                     Hash *info_hash,
-                                     char *token,
-                                     size_t token_len)
+        Node *to,
+        Hash *info_hash,
+        char *token,
+        size_t token_len)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(info_hash != NULL && "NULL Hash pointer");
@@ -167,10 +167,10 @@ Message *Message_CreateRAnnouncePeer(Client *client, Message *query)
 /* This does not copy the found nodes, so the message must be sent before
  * they can be destroyed. */
 Message *Message_CreateRGetPeers(Client *client,
-                                 Message *query,
-                                 DArray *peers,
-                                 DArray *nodes, 
-                                 Token *token)
+        Message *query,
+        DArray *peers,
+        DArray *nodes, 
+        Token *token)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(query != NULL && "NULL Message pointer");

@@ -46,7 +46,7 @@ int Dht_Start(void *client_)
     Client *client = (Client *)client_;
     check(client != NULL, "NULL client pointer");
 
-    Search *search = Client_AddSearch(client, &client->table->id);
+    struct Search *search = Client_AddSearch(client, &client->table->id);
     check(search != NULL, "Client_AddSearch failed");
 
     int rc = NetworkUp(client);
@@ -187,17 +187,17 @@ bstring Dht_MessageTypeStr(MessageType type)
 {
     switch (type)
     {
-    case MUnknown:      return bfromcstr("MUnknown");
-    case QPing:         return bfromcstr("QPing");
-    case QFindNode:     return bfromcstr("QFindNode");
-    case QGetPeers:     return bfromcstr("QGetPeers");
-    case QAnnouncePeer: return bfromcstr("QAnnouncePeer");
-    case RPing:         return bfromcstr("RPing");
-    case RFindNode:     return bfromcstr("RFindNode");
-    case RGetPeers:     return bfromcstr("RGetPeers");
-    case RAnnouncePeer: return bfromcstr("RAnnouncePeer");
-    case RError:        return bfromcstr("RError");
-    default:            return bfromcstr("(Invalid MessageType");
+        case MUnknown:      return bfromcstr("MUnknown");
+        case QPing:         return bfromcstr("QPing");
+        case QFindNode:     return bfromcstr("QFindNode");
+        case QGetPeers:     return bfromcstr("QGetPeers");
+        case QAnnouncePeer: return bfromcstr("QAnnouncePeer");
+        case RPing:         return bfromcstr("RPing");
+        case RFindNode:     return bfromcstr("RFindNode");
+        case RGetPeers:     return bfromcstr("RGetPeers");
+        case RAnnouncePeer: return bfromcstr("RAnnouncePeer");
+        case RError:        return bfromcstr("RError");
+        default:            return bfromcstr("(Invalid MessageType");
     }
 }
 
@@ -205,11 +205,11 @@ bstring Dht_RERROR_Str(int code)
 {
     switch (code)
     {
-    case RERROR_GENERIC:       return bfromcstr("GENERIC");
-    case RERROR_SERVER:        return bfromcstr("SERVER");
-    case RERROR_PROTOCOL:      return bfromcstr("PROTOCOL");
-    case RERROR_METHODUNKNOWN: return bfromcstr("METHOD UNKNOWN");
-    default:                   return bfromcstr("(UNKNOWN CODE)");
+        case RERROR_GENERIC:       return bfromcstr("GENERIC");
+        case RERROR_SERVER:        return bfromcstr("SERVER");
+        case RERROR_PROTOCOL:      return bfromcstr("PROTOCOL");
+        case RERROR_METHODUNKNOWN: return bfromcstr("METHOD UNKNOWN");
+        default:                   return bfromcstr("(UNKNOWN CODE)");
     }
 }
 
@@ -221,7 +221,7 @@ bstring Dht_MessageStr(Message *message)
         return bfromcstr("(NULL Message)");
 
     bstring type = NULL, node = NULL, tid = NULL, id = NULL,
-        str = NULL, data = NULL;
+            str = NULL, data = NULL;
 
     type = Dht_MessageTypeStr(message->type);
     check_mem(type);
@@ -236,15 +236,15 @@ bstring Dht_MessageStr(Message *message)
     check_mem(id);
 
     str = bformat(
-        "%-13s Errors:%02X\n"
-        "%s\n"
-        "tid %s\n"
-        "Id %s",
-        type->data,
-        message->errors,
-        node->data,
-        tid->data,
-        id->data);
+            "%-13s Errors:%02X\n"
+            "%s\n"
+            "tid %s\n"
+            "Id %s",
+            type->data,
+            message->errors,
+            node->data,
+            tid->data,
+            id->data);
     check_mem(str);
 
     data = DataStr(message);
@@ -284,18 +284,18 @@ bstring DataStr(Message *message)
 
     switch (message->type)
     {
-    case MUnknown:
-    case QPing:
-    case RPing:
-    case RAnnouncePeer:
-        return bfromcstr("");   /* No data. */
-    case QFindNode: return DataQFindNodeStr(message);
-    case QGetPeers: return DataQGetPeersStr(message);
-    case QAnnouncePeer: return DataQAnnouncePeerStr(message);
-    case RFindNode: return DataRFindNodeStr(message);
-    case RGetPeers: return DataRGetPeersStr(message);
-    case RError: return DataRErrorStr(message);
-    default: return bfromcstr("(Invalid MessageType)");
+        case MUnknown:
+        case QPing:
+        case RPing:
+        case RAnnouncePeer:
+            return bfromcstr("");   /* No data. */
+        case QFindNode: return DataQFindNodeStr(message);
+        case QGetPeers: return DataQGetPeersStr(message);
+        case QAnnouncePeer: return DataQAnnouncePeerStr(message);
+        case RFindNode: return DataRFindNodeStr(message);
+        case RGetPeers: return DataRGetPeersStr(message);
+        case RError: return DataRErrorStr(message);
+        default: return bfromcstr("(Invalid MessageType)");
     }
 }
 
@@ -327,11 +327,11 @@ bstring DataQAnnouncePeerStr(Message *message)
     bstring ftoken = Dht_FTokenStr(message->data.qannouncepeer.token);
 
     bstring str = bformat("QAnnouncePeer info_hash: %s\n"
-                          "                  token: %s\n"
-                          "                   port: %hd",
-                          info_hash->data,
-                          ftoken->data,
-                          message->data.qannouncepeer.port);
+            "                  token: %s\n"
+            "                   port: %hd",
+            info_hash->data,
+            ftoken->data,
+            message->data.qannouncepeer.port);
 
     bdestroy(info_hash);
     bdestroy(ftoken);
@@ -357,16 +357,16 @@ bstring DataRFindNodeStr(Message *message)
         bstring node = Dht_NodeStr(nodes[i]);
 
         bformata(str, "%sNode %02zd: %s",
-                 i > 0 ? "\n" : "",
-                 i,
-                 node->data);
+                i > 0 ? "\n" : "",
+                i,
+                node->data);
 
         bdestroy(node);
     }
 
     return str;
 }
-        
+
 bstring DataRGetPeersStr(Message *message)
 {
     if (message->data.rgetpeers.nodes != NULL)
@@ -405,9 +405,9 @@ bstring DataRErrorStr(Message *message)
     bstring error = Dht_RERROR_Str(message->data.rerror.code);
 
     bstring str =  bformat("%03d %s: %s",
-                           message->data.rerror.code,
-                           error->data,
-                           message->data.rerror.message->data);
+            message->data.rerror.code,
+            error->data,
+            message->data.rerror.message->data);
 
     bdestroy(error);
 

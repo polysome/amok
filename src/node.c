@@ -11,20 +11,20 @@ NodeStatus Node_Status(Node *node, time_t time)
 
     if (node->reply_time != 0)
     {
-	if (difftime(time, node->reply_time) < NODE_RESPITE)
-	    return Good;
+        if (difftime(time, node->reply_time) < NODE_RESPITE)
+            return Good;
 
-	if (difftime(time, node->query_time) < NODE_RESPITE)
-	    return Good;
+        if (difftime(time, node->query_time) < NODE_RESPITE)
+            return Good;
 
-	if (node->pending_queries < NODE_MAX_PENDING)
-	    return Questionable;
+        if (node->pending_queries < NODE_MAX_PENDING)
+            return Questionable;
 
-	return Bad;
+        return Bad;
     }
 
     if (node->pending_queries < NODE_MAX_PENDING)
-	return Unknown;
+        return Unknown;
 
     return Bad;
 }

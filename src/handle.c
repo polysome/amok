@@ -13,14 +13,14 @@ ReplyHandler GetReplyHandler(MessageType type)
 {
     switch (type)
     {
-    case RError: return HandleRError;
-    case RPing: return HandleRPing;
-    case RAnnouncePeer: return HandleRAnnouncePeer;
-    case RFindNode: return HandleRFindNode;
-    case RGetPeers: return HandleRGetPeers;
-    default:
-        log_err("No reply handler for type %d", type);
-        return NULL;
+        case RError: return HandleRError;
+        case RPing: return HandleRPing;
+        case RAnnouncePeer: return HandleRAnnouncePeer;
+        case RFindNode: return HandleRFindNode;
+        case RGetPeers: return HandleRGetPeers;
+        default:
+                        log_err("No reply handler for type %d", type);
+                        return NULL;
     }
 }
 
@@ -28,13 +28,13 @@ QueryHandler GetQueryHandler(MessageType type)
 {
     switch (type)
     {
-    case QPing: return HandleQPing;
-    case QAnnouncePeer: return HandleQAnnouncePeer;
-    case QFindNode: return HandleQFindNode;
-    case QGetPeers: return HandleQGetPeers;
-    default:
-        log_err("No query handler for type %d", type);
-        return NULL;
+        case QPing: return HandleQPing;
+        case QAnnouncePeer: return HandleQAnnouncePeer;
+        case QFindNode: return HandleQFindNode;
+        case QGetPeers: return HandleQGetPeers;
+        default:
+                        log_err("No query handler for type %d", type);
+                        return NULL;
     }
 }
 
@@ -43,7 +43,7 @@ int HandleReply(Client *client, Message *message)
     assert(client != NULL && "NULL Client pointer");
     assert(message != NULL && "NULL Message pointer");
     assert((message->type == RPing
-            || message->type == RAnnouncePeer) && "Wrong message type");
+                || message->type == RAnnouncePeer) && "Wrong message type");
     assert(message->context == NULL && "Non-NULL message context");
 
     int rc = Table_MarkReply(client->table, message);
@@ -117,14 +117,14 @@ int HandleRFindNode(Client *client, Message *message)
     check(rc == 0, "Table_MarkReply failed (search->table)");
 
     rc = AddSearchNodes(client,
-                        search,
-                        message->data.rfindnode.nodes,
-                        message->data.rfindnode.count);
+            search,
+            message->data.rfindnode.nodes,
+            message->data.rfindnode.count);
     check(rc == 0, "AddSearchNodes failed");
 
     /* Free nodes not added to search */
     Node_DestroyBlock(message->data.rfindnode.nodes,
-                      message->data.rfindnode.count);
+            message->data.rfindnode.count);
 
     return 0;
 error:
@@ -141,7 +141,7 @@ int HandleRGetPeers(Client *client, Message *message)
     RGetPeersData *data = &message->data.rgetpeers;
 
     check((data->values == NULL || data->nodes == NULL),
-          "Both peers and nodes in RGetPeers");
+            "Both peers and nodes in RGetPeers");
 
     Search *search = (Search *)message->context;
 
@@ -225,7 +225,7 @@ int AddSearchNodes(Client *client, Search *search, Node **nodes, size_t count)
     while (node < end)
     {
         if (client->node.addr.s_addr == (*node)->addr.s_addr
-            && client->node.port == (*node)->port)
+                && client->node.port == (*node)->port)
         {
             /* Don't add ourselves */
             node++;
@@ -263,7 +263,7 @@ Message *HandleQFindNode(Client *client, Message *query)
     check(rc == 0, "Table_MarkQuery failed");
 
     found = Table_GatherClosest(client->table,
-                                query->data.qfindnode.target);
+            query->data.qfindnode.target);
     check(found != NULL, "Table_GatherClosest failed");
 
     Message *reply = Message_CreateRFindNode(client, query, found);
@@ -303,9 +303,9 @@ Message *HandleQAnnouncePeer(Client *client, Message *query)
     check(rc == 0, "Table_MarkQuery failed");
 
     if (!Client_IsValidToken(client,
-                             &query->node,
-                             query->data.qannouncepeer.token.data,
-                             query->data.qannouncepeer.token.len))
+                &query->node,
+                query->data.qannouncepeer.token.data,
+                query->data.qannouncepeer.token.len))
     {
         Message *error = Message_CreateRErrorBadToken(client, query);
         check(error != NULL, "Message_CreateRErrorBadToken failed");
@@ -313,7 +313,7 @@ Message *HandleQAnnouncePeer(Client *client, Message *query)
     }
 
     Peer peer = { .addr = query->node.addr.s_addr,
-                  .port = query->data.qannouncepeer.port };
+        .port = query->data.qannouncepeer.port };
 
     rc = Client_AddPeer(client, query->data.qannouncepeer.info_hash, &peer);
     check(rc == 0, "Client_AddPeer failed");
@@ -347,7 +347,7 @@ Message *HandleQGetPeers(Client *client, Message *query)
         peers = NULL;
 
         nodes = Table_GatherClosest(client->table,
-                                    query->data.qgetpeers.info_hash);
+                query->data.qgetpeers.info_hash);
         check(nodes != NULL, "Table_GatherClosest failed");
     }
 

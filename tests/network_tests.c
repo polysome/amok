@@ -28,7 +28,7 @@ char *test_NetworkSendReceive()
 {
     Hash id;
     Client *client = Client_Create(id, htonl(INADDR_LOOPBACK), TESTPORT, 0);
-  
+
     int rc = NetworkUp(client);
     mu_assert(rc == 0, "NetworkUp failed");
 

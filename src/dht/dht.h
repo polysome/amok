@@ -151,15 +151,15 @@ typedef struct Message {
     Hash id;
     void *context;
     union {
-	QPingData qping;
-	QFindNodeData qfindnode;
-	QGetPeersData qgetpeers;
-	QAnnouncePeerData qannouncepeer;
-	RPingData rping;
-	RFindNodeData rfindnode;
-	RGetPeersData rgetpeers;
-	RAnnouncePeerData rannouncepeer;
-	RErrorData rerror;
+        QPingData qping;
+        QFindNodeData qfindnode;
+        QGetPeersData qgetpeers;
+        QAnnouncePeerData qannouncepeer;
+        RPingData rping;
+        RFindNodeData rfindnode;
+        RGetPeersData rgetpeers;
+        RAnnouncePeerData rannouncepeer;
+        RErrorData rerror;
     } data;
 } Message;
 

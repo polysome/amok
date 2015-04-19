@@ -14,9 +14,9 @@ typedef enum BType { BString, BInteger, BList, BDictionary } BType;
 typedef struct BNode {
     enum BType type;
     union {
-	char *string;
-	long integer;
-	struct BNode **nodes;
+        char *string;
+        long integer;
+        struct BNode **nodes;
     } value;
     size_t count;               /* Length of string or number of nodes. */
     char *data;                 /* Original source data of this node. */

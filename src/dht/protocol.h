@@ -25,8 +25,8 @@ typedef struct PendingResponse {
  * On success, *rc is 0 and a valid PendingResponse is returned.
  * Otherwise, *rc is -1 and the return value is empty. */
 typedef PendingResponse (*GetPendingResponse_fp)(void *responses,
-                                                 char *transaction_id,
-                                                 int *rc);
+        char *transaction_id,
+        int *rc);
 
 typedef int (*AddPendingResponse_fp)(void *responses, PendingResponse entry);
 

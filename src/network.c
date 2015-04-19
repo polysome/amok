@@ -23,8 +23,8 @@ int NetworkUp(Client *client)
     sockaddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     int rc = bind(client->socket,
-                  (struct sockaddr *) &sockaddr,
-                  sizeof(struct sockaddr_in));
+            (struct sockaddr *) &sockaddr,
+            sizeof(struct sockaddr_in));
     check(rc == 0, "bind failed");
 
     return 0;
@@ -40,7 +40,7 @@ int NetworkDown(Client *client)
     int rc;
 
 retry:
-  
+
     rc = close(client->socket);
 
     if (rc == -1 && errno == EINTR)
@@ -67,11 +67,11 @@ int Send(Client *client, Node *node, char *buf, size_t len)
     addr.sin_port = node->port;
 
     int rc = sendto(client->socket,
-                    buf,
-                    len,
-                    0,
-                    (struct sockaddr *) &addr,
-                    sizeof(addr));
+            buf,
+            len,
+            0,
+            (struct sockaddr *) &addr,
+            sizeof(addr));
     check(rc == (int)len, "sendto failed");
 
     return 0;
@@ -91,11 +91,11 @@ int Receive(Client *client, Node *node, char *buf, size_t len)
 
     errno = 0;
     int rc = recvfrom(client->socket,
-                      buf,
-                      len,
-                      MSG_DONTWAIT,
-                      (struct sockaddr *) &srcaddr,
-                      &addrlen);
+            buf,
+            len,
+            MSG_DONTWAIT,
+            (struct sockaddr *) &srcaddr,
+            &addrlen);
 
     assert(addrlen == sizeof(srcaddr) && "Unexpected addrlen from recvfrom");
 
@@ -166,8 +166,8 @@ int ReceiveMessage(Client *client, Message **message)
     }
 
     Message *decoded = Message_Decode(client->buf,
-                                      len,
-                                      (struct PendingResponses *)client->pending);
+            len,
+            (struct PendingResponses *)client->pending);
     check(decoded != NULL, "Message_Decode failed");
 
     decoded->node = node;

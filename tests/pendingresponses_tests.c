@@ -58,25 +58,25 @@ char *test_addremove()
     while (tid[i] != 0)
     {
         PendingResponse entry = { type[i], tid[i], {{ 0 }}, &dummy };
-	int rc = responses->addPendingResponse(responses, entry);
-	mu_assert(rc == 0, "HashmapPendingResponses_Add failed");
+        int rc = responses->addPendingResponse(responses, entry);
+        mu_assert(rc == 0, "HashmapPendingResponses_Add failed");
 
-	++i;
+        ++i;
     }
 
     i = 0;
-    
+
     while(tid[i] != 0)
     {
         int rc;
-	PendingResponse entry
+        PendingResponse entry
             = responses->getPendingResponse(responses, (char *)&tid[i], &rc);
         mu_assert(rc == 0, "HashmapPendingResponses_Remove failed");
-	mu_assert(entry.type == type[i], "Wrong type");
+        mu_assert(entry.type == type[i], "Wrong type");
         mu_assert(entry.tid == tid[i], "Wring tid");
         mu_assert(entry.context == &dummy, "Unexpected context");
 
-	++i;
+        ++i;
     }
 
     HashmapPendingResponses_Destroy(responses);

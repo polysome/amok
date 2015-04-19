@@ -33,7 +33,7 @@ int Bucket_ContainsNode(Bucket *bucket, Node *node)
     while (bucket_node < bucket->nodes + BUCKET_K)
     {
         if (*bucket_node != NULL &&
-            Hash_Equals(&node->id, &(*bucket_node)->id))
+                Hash_Equals(&node->id, &(*bucket_node)->id))
         {
             return 1;
         }
@@ -57,14 +57,14 @@ Node *Bucket_ReplaceBad(Bucket *bucket, Node *node)
         if (bucket->nodes[i] == NULL)
             continue;
 
-	if (Node_Status(bucket->nodes[i], now) == Bad)
-	{
-	    Node *replaced = bucket->nodes[i];
-	    bucket->nodes[i] = node;
-	    bucket->change_time = now;
+        if (Node_Status(bucket->nodes[i], now) == Bad)
+        {
+            Node *replaced = bucket->nodes[i];
+            bucket->nodes[i] = node;
+            bucket->change_time = now;
 
-	    return replaced;
-	}
+            return replaced;
+        }
     }
 
     return NULL;
@@ -83,28 +83,28 @@ Node *Bucket_ReplaceQuestionable(Bucket *bucket, Node *node)
         if (bucket->nodes[i] == NULL)
             continue;
 
-	if (Node_Status(bucket->nodes[i], now) == Questionable)
-	{
-	    if (bucket->nodes[i]->reply_time < oldest_time) {
-		oldest_time = bucket->nodes[i]->reply_time;
-		oldest_i = i;
-	    }
+        if (Node_Status(bucket->nodes[i], now) == Questionable)
+        {
+            if (bucket->nodes[i]->reply_time < oldest_time) {
+                oldest_time = bucket->nodes[i]->reply_time;
+                oldest_i = i;
+            }
 
-	    if (bucket->nodes[i]->query_time < oldest_time) {
-		oldest_time = bucket->nodes[i]->query_time;
-		oldest_i = i;
-	    }
-	}
+            if (bucket->nodes[i]->query_time < oldest_time) {
+                oldest_time = bucket->nodes[i]->query_time;
+                oldest_i = i;
+            }
+        }
     }
 
     if (oldest_i > -1)
     {
-	// TODO: ping before replacing
-	Node *replaced = bucket->nodes[oldest_i];
-	bucket->nodes[oldest_i] = node;
-	bucket->change_time = now;
+        // TODO: ping before replacing
+        Node *replaced = bucket->nodes[oldest_i];
+        bucket->nodes[oldest_i] = node;
+        bucket->change_time = now;
 
-	return replaced;
+        return replaced;
     }
 
     return NULL;

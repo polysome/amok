@@ -37,7 +37,7 @@ extern "C" {
     typedef struct tagbstring * bstring;
     typedef const struct tagbstring * const_bstring;
 
-/* Copy functions */
+    /* Copy functions */
 #define cstr2bstr bfromcstr
     extern bstring bfromcstr (const char * str);
     extern bstring bfromcstralloc (int mlen, const char * str);
@@ -50,17 +50,17 @@ extern "C" {
     extern int bassigncstr (bstring a, const char * str);
     extern int bassignblk (bstring a, const void * s, int len);
 
-/* Destroy function */
+    /* Destroy function */
     extern int bdestroy (bstring b);
 
-/* Space allocation hinting functions */
+    /* Space allocation hinting functions */
     extern int balloc (bstring s, int len);
     extern int ballocmin (bstring b, int len);
 
-/* Substring extraction */
+    /* Substring extraction */
     extern bstring bmidstr (const_bstring b, int left, int len);
 
-/* Various standard manipulations */
+    /* Various standard manipulations */
     extern int bconcat (bstring b0, const_bstring b1);
     extern int bconchar (bstring b0, char c);
     extern int bcatcstr (bstring b, const char * s);
@@ -72,7 +72,7 @@ extern "C" {
     extern int bsetstr (bstring b0, int pos, const_bstring b1, unsigned char fill);
     extern int btrunc (bstring b, int n);
 
-/* Scan/search functions */
+    /* Scan/search functions */
     extern int bstricmp (const_bstring b0, const_bstring b1);
     extern int bstrnicmp (const_bstring b0, const_bstring b1, int n);
     extern int biseqcaseless (const_bstring b0, const_bstring b1);
@@ -98,7 +98,7 @@ extern "C" {
     extern int bfindreplace (bstring b, const_bstring find, const_bstring repl, int pos);
     extern int bfindreplacecaseless (bstring b, const_bstring find, const_bstring repl, int pos);
 
-/* List of string container functions */
+    /* List of string container functions */
     struct bstrList {
         int qty, mlen;
         bstring * entry;
@@ -108,19 +108,19 @@ extern "C" {
     extern int bstrListAlloc (struct bstrList * sl, int msz);
     extern int bstrListAllocMin (struct bstrList * sl, int msz);
 
-/* String split and join functions */
+    /* String split and join functions */
     extern struct bstrList * bsplit (const_bstring str, unsigned char splitChar);
     extern struct bstrList * bsplits (const_bstring str, const_bstring splitStr);
     extern struct bstrList * bsplitstr (const_bstring str, const_bstring splitStr);
     extern bstring bjoin (const struct bstrList * bl, const_bstring sep);
     extern int bsplitcb (const_bstring str, unsigned char splitChar, int pos,
-                         int (* cb) (void * parm, int ofs, int len), void * parm);
+            int (* cb) (void * parm, int ofs, int len), void * parm);
     extern int bsplitscb (const_bstring str, const_bstring splitStr, int pos,
-                          int (* cb) (void * parm, int ofs, int len), void * parm);
+            int (* cb) (void * parm, int ofs, int len), void * parm);
     extern int bsplitstrcb (const_bstring str, const_bstring splitStr, int pos,
-                            int (* cb) (void * parm, int ofs, int len), void * parm);
+            int (* cb) (void * parm, int ofs, int len), void * parm);
 
-/* Miscellaneous functions */
+    /* Miscellaneous functions */
     extern int bpattern (bstring b, int len);
     extern int btoupper (bstring b);
     extern int btolower (bstring b);
@@ -128,7 +128,7 @@ extern "C" {
     extern int brtrimws (bstring b);
     extern int btrimws (bstring b);
 
-/* <*>printf format functions */
+    /* <*>printf format functions */
 #if !defined (BSTRLIB_NOVSNP)
     extern bstring bformat (const char * fmt, ...);
     extern int bformata (bstring b, const char * fmt, ...);
@@ -136,39 +136,39 @@ extern "C" {
     extern int bvcformata (bstring b, int count, const char * fmt, va_list arglist);
 
 #define bvformata(ret, b, fmt, lastarg) {                               \
-        bstring bstrtmp_b = (b);                                        \
-        const char * bstrtmp_fmt = (fmt);                               \
-        int bstrtmp_r = BSTR_ERR, bstrtmp_sz = 16;                      \
-	for (;;) {                                                      \
-            va_list bstrtmp_arglist;                                    \
-            va_start (bstrtmp_arglist, lastarg);                        \
-            bstrtmp_r = bvcformata (bstrtmp_b, bstrtmp_sz, bstrtmp_fmt, bstrtmp_arglist); \
-            va_end (bstrtmp_arglist);                                   \
-            if (bstrtmp_r >= 0) { /* Everything went ok */              \
-                bstrtmp_r = BSTR_OK;                                    \
-                break;                                                  \
-            } else if (-bstrtmp_r <= bstrtmp_sz) { /* A real error? */  \
-                bstrtmp_r = BSTR_ERR;                                   \
-                break;                                                  \
-            }                                                           \
-            bstrtmp_sz = -bstrtmp_r; /* Doubled or target size */       \
-	}                                                               \
-	ret = bstrtmp_r;                                                \
-    }
+    bstring bstrtmp_b = (b);                                        \
+    const char * bstrtmp_fmt = (fmt);                               \
+    int bstrtmp_r = BSTR_ERR, bstrtmp_sz = 16;                      \
+    for (;;) {                                                      \
+        va_list bstrtmp_arglist;                                    \
+        va_start (bstrtmp_arglist, lastarg);                        \
+        bstrtmp_r = bvcformata (bstrtmp_b, bstrtmp_sz, bstrtmp_fmt, bstrtmp_arglist); \
+        va_end (bstrtmp_arglist);                                   \
+        if (bstrtmp_r >= 0) { /* Everything went ok */              \
+            bstrtmp_r = BSTR_OK;                                    \
+            break;                                                  \
+        } else if (-bstrtmp_r <= bstrtmp_sz) { /* A real error? */  \
+            bstrtmp_r = BSTR_ERR;                                   \
+            break;                                                  \
+        }                                                           \
+        bstrtmp_sz = -bstrtmp_r; /* Doubled or target size */       \
+    }                                                               \
+    ret = bstrtmp_r;                                                \
+}
 
 #endif
 
     typedef int (*bNgetc) (void *parm);
     typedef size_t (* bNread) (void *buff, size_t elsize, size_t nelem, void *parm);
 
-/* Input functions */
+    /* Input functions */
     extern bstring bgets (bNgetc getcPtr, void * parm, char terminator);
     extern bstring bread (bNread readPtr, void * parm);
     extern int bgetsa (bstring b, bNgetc getcPtr, void * parm, char terminator);
     extern int bassigngets (bstring b, bNgetc getcPtr, void * parm, char terminator);
     extern int breada (bstring b, bNread readPtr, void * parm);
 
-/* Stream functions */
+    /* Stream functions */
     extern struct bStream * bsopen (bNread readPtr, void * parm);
     extern void * bsclose (struct bStream * s);
     extern int bsbufflength (struct bStream * s, int sz);
@@ -181,12 +181,12 @@ extern "C" {
     extern int bsunread (struct bStream * s, const_bstring b);
     extern int bspeek (bstring r, const struct bStream * s);
     extern int bssplitscb (struct bStream * s, const_bstring splitStr, 
-	int (* cb) (void * parm, int ofs, const_bstring entry), void * parm);
-    extern int bssplitstrcb (struct bStream * s, const_bstring splitStr, 
-	int (* cb) (void * parm, int ofs, const_bstring entry), void * parm);
-    extern int bseof (const struct bStream * s);
+            int (* cb) (void * parm, int ofs, const_bstring entry), void * parm);
+extern int bssplitstrcb (struct bStream * s, const_bstring splitStr, 
+        int (* cb) (void * parm, int ofs, const_bstring entry), void * parm);
+extern int bseof (const struct bStream * s);
 
-    struct tagbstring {
+struct tagbstring {
     int mlen;
     int slen;
     unsigned char * data;
@@ -218,52 +218,52 @@ extern "C" {
 /* Reference building macros */
 #define cstr2tbstr btfromcstr
 #define btfromcstr(t,s) {                                               \
-        (t).data = (unsigned char *) (s);                               \
-        (t).slen = ((t).data) ? ((int) (strlen) ((char *)(t).data)) : 0; \
-        (t).mlen = -1;                                                  \
+    (t).data = (unsigned char *) (s);                               \
+    (t).slen = ((t).data) ? ((int) (strlen) ((char *)(t).data)) : 0; \
+    (t).mlen = -1;                                                  \
 }
 #define blk2tbstr(t,s,l) {                      \
-        (t).data = (unsigned char *) (s);       \
-        (t).slen = l;                           \
-        (t).mlen = -1;                          \
+    (t).data = (unsigned char *) (s);       \
+    (t).slen = l;                           \
+    (t).mlen = -1;                          \
 }
 #define btfromblk(t,s,l) blk2tbstr(t,s,l)
 #define bmid2tbstr(t,b,p,l) {                                           \
-        const_bstring bstrtmp_s = (b);                                  \
-        if (bstrtmp_s && bstrtmp_s->data && bstrtmp_s->slen >= 0) {     \
-    int bstrtmp_left = (p);                                             \
-    int bstrtmp_len  = (l);                                             \
-    if (bstrtmp_left < 0) {                                             \
-    bstrtmp_len += bstrtmp_left;                                        \
-    bstrtmp_left = 0;                                                   \
-}                                                                       \
-    if (bstrtmp_len > bstrtmp_s->slen - bstrtmp_left)                   \
+    const_bstring bstrtmp_s = (b);                                  \
+    if (bstrtmp_s && bstrtmp_s->data && bstrtmp_s->slen >= 0) {     \
+        int bstrtmp_left = (p);                                             \
+        int bstrtmp_len  = (l);                                             \
+        if (bstrtmp_left < 0) {                                             \
+            bstrtmp_len += bstrtmp_left;                                        \
+            bstrtmp_left = 0;                                                   \
+        }                                                                       \
+        if (bstrtmp_len > bstrtmp_s->slen - bstrtmp_left)                   \
         bstrtmp_len = bstrtmp_s->slen - bstrtmp_left;                   \
-    if (bstrtmp_len <= 0) {                                             \
-    (t).data = (unsigned char *)"";                                     \
-    (t).slen = 0;                                                       \
-} else {                                                                \
-    (t).data = bstrtmp_s->data + bstrtmp_left;                          \
-    (t).slen = bstrtmp_len;                                             \
-}                                                                       \
-} else {                                                                \
-    (t).data = (unsigned char *)"";                                     \
-    (t).slen = 0;                                                       \
-}                                                                       \
-        (t).mlen = -__LINE__;                                           \
+        if (bstrtmp_len <= 0) {                                             \
+            (t).data = (unsigned char *)"";                                     \
+            (t).slen = 0;                                                       \
+        } else {                                                                \
+            (t).data = bstrtmp_s->data + bstrtmp_left;                          \
+            (t).slen = bstrtmp_len;                                             \
+        }                                                                       \
+    } else {                                                                \
+        (t).data = (unsigned char *)"";                                     \
+        (t).slen = 0;                                                       \
+    }                                                                       \
+    (t).mlen = -__LINE__;                                           \
 }
 #define btfromblkltrimws(t,s,l) {                               \
-        int bstrtmp_idx = 0, bstrtmp_len = (l);                 \
-        unsigned char * bstrtmp_s = (s);                        \
-        if (bstrtmp_s && bstrtmp_len >= 0) {                    \
-            for (; bstrtmp_idx < bstrtmp_len; bstrtmp_idx++) {  \
-                if (!isspace (bstrtmp_s[bstrtmp_idx])) break;   \
-            }                                                   \
-        }                                                       \
-        (t).data = bstrtmp_s + bstrtmp_idx;                     \
-        (t).slen = bstrtmp_len - bstrtmp_idx;                   \
-        (t).mlen = -__LINE__;                                   \
-    }
+    int bstrtmp_idx = 0, bstrtmp_len = (l);                 \
+    unsigned char * bstrtmp_s = (s);                        \
+    if (bstrtmp_s && bstrtmp_len >= 0) {                    \
+        for (; bstrtmp_idx < bstrtmp_len; bstrtmp_idx++) {  \
+            if (!isspace (bstrtmp_s[bstrtmp_idx])) break;   \
+        }                                                   \
+    }                                                       \
+    (t).data = bstrtmp_s + bstrtmp_idx;                     \
+    (t).slen = bstrtmp_len - bstrtmp_idx;                   \
+    (t).mlen = -__LINE__;                                   \
+}
 #define btfromblkrtrimws(t,s,l) {                               \
     int bstrtmp_len = (l) - 1;                                  \
     unsigned char * bstrtmp_s = (s);                            \
@@ -275,22 +275,22 @@ extern "C" {
     (t).data = bstrtmp_s;                                       \
     (t).slen = bstrtmp_len + 1;                                 \
     (t).mlen = -__LINE__;                                       \
-    }
+}
 #define btfromblktrimws(t,s,l) {                                \
-        int bstrtmp_idx = 0, bstrtmp_len = (l) - 1;             \
-        unsigned char * bstrtmp_s = (s);                        \
-        if (bstrtmp_s && bstrtmp_len >= 0) {                    \
-            for (; bstrtmp_idx <= bstrtmp_len; bstrtmp_idx++) { \
-                if (!isspace (bstrtmp_s[bstrtmp_idx])) break;   \
-            }                                                   \
-            for (; bstrtmp_len >= bstrtmp_idx; bstrtmp_len--) { \
-                if (!isspace (bstrtmp_s[bstrtmp_len])) break;   \
-            }                                                   \
-        }                                                       \
-        (t).data = bstrtmp_s + bstrtmp_idx;                     \
-        (t).slen = bstrtmp_len + 1 - bstrtmp_idx;               \
-        (t).mlen = -__LINE__;                                   \
-    }
+    int bstrtmp_idx = 0, bstrtmp_len = (l) - 1;             \
+    unsigned char * bstrtmp_s = (s);                        \
+    if (bstrtmp_s && bstrtmp_len >= 0) {                    \
+        for (; bstrtmp_idx <= bstrtmp_len; bstrtmp_idx++) { \
+            if (!isspace (bstrtmp_s[bstrtmp_idx])) break;   \
+        }                                                   \
+        for (; bstrtmp_len >= bstrtmp_idx; bstrtmp_len--) { \
+            if (!isspace (bstrtmp_s[bstrtmp_len])) break;   \
+        }                                                   \
+    }                                                       \
+    (t).data = bstrtmp_s + bstrtmp_idx;                     \
+    (t).slen = bstrtmp_len + 1 - bstrtmp_idx;               \
+    (t).mlen = -__LINE__;                                   \
+}
 
 /* Write protection macros */
 #define bwriteprotect(t)     { if ((t).mlen >=  0) (t).mlen = -1; }

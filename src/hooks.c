@@ -37,7 +37,7 @@ void Hooks_Destroy(DArray *array)
 
     DArray_destroy(array);
 }
-    
+
 int Client_AddHook(Client *client, Hook *hook)
 {
     assert(client != NULL && "NULL client pointer");

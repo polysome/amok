@@ -14,7 +14,7 @@ Table *Table_Create(Hash *id)
     check_mem(table);
 
     table->id = *id;
-    
+
     Bucket *bucket = Table_AddBucket(table);
     check_mem(bucket);
 
@@ -30,12 +30,12 @@ error:
 void Table_Destroy(Table *table)
 {
     if (table == NULL)
-	return;
+        return;
 
     int i = 0;
     for (i = 0; i < table->end; i++)
     {
-	Bucket_Destroy(table->buckets[i]);
+        Bucket_Destroy(table->buckets[i]);
     }
 
     free(table);
@@ -55,18 +55,18 @@ int Table_HasShiftableNodes(Hash *id, Bucket *bucket, Node *node)
 
     if (bucket->index < Hash_SharedPrefix(id, &node->id))
     {
-	return 1;
+        return 1;
     }
 
     int i = 0;
     for (i = 0; i < BUCKET_K; i++)
     {
         Node *current = bucket->nodes[i];
-	if (current != NULL
-	    && bucket->index < Hash_SharedPrefix(id, &current->id))
-	{
-	    return 1;
-	}
+        if (current != NULL
+                && bucket->index < Hash_SharedPrefix(id, &current->id))
+        {
+            return 1;
+        }
     }
 
     return 0;
@@ -102,12 +102,12 @@ int Table_ShiftBucketNodes(Table *table, Bucket *bucket)
     int i = 0;
     for (i = 0; i < BUCKET_K && !Bucket_IsFull(next); i++)
     {
-	Node *node = bucket->nodes[i];
+        Node *node = bucket->nodes[i];
 
-	if (node == NULL)
+        if (node == NULL)
             continue;
 
-	if (Hash_SharedPrefix(&table->id, &node->id) <= bucket->index)
+        if (Hash_SharedPrefix(&table->id, &node->id) <= bucket->index)
             continue;
 
         int rc = Bucket_AddNode(next, node);
@@ -133,39 +133,39 @@ Table_InsertNodeResult Table_InsertNode(Table *table, Node *node)
     check(bucket != NULL, "Found no bucket for node");
 
     if (Bucket_ContainsNode(bucket, node)) {
-	return (Table_InsertNodeResult)
-	{ .rc = OKAlreadyAdded, .bucket = bucket, .replaced = NULL};
+        return (Table_InsertNodeResult)
+        { .rc = OKAlreadyAdded, .bucket = bucket, .replaced = NULL};
     }
 
     int rc;
 
     if (Bucket_IsFull(bucket))
     {
-	Node *replaced = NULL;
+        Node *replaced = NULL;
 
-	if ((replaced = Bucket_ReplaceBad(bucket, node))) {
-	    return (Table_InsertNodeResult)
-	    { .rc = OKReplaced, .bucket = bucket, replaced = replaced};
-	}
+        if ((replaced = Bucket_ReplaceBad(bucket, node))) {
+            return (Table_InsertNodeResult)
+            { .rc = OKReplaced, .bucket = bucket, replaced = replaced};
+        }
 
-	if ((replaced = Bucket_ReplaceQuestionable(bucket, node))) {
-	    return (Table_InsertNodeResult)
-	    { .rc = OKReplaced, .bucket = bucket, replaced = replaced};
-	}
+        if ((replaced = Bucket_ReplaceQuestionable(bucket, node))) {
+            return (Table_InsertNodeResult)
+            { .rc = OKReplaced, .bucket = bucket, replaced = replaced};
+        }
 
-	if (Table_IsLastBucket(table, bucket)
-            && Table_CanAddBucket(table)
-	    && Table_HasShiftableNodes(&table->id, bucket, node))
-	{
-	    Bucket *new_bucket = Table_AddBucket(table);
-	    check(new_bucket != NULL, "Error adding new bucket");
+        if (Table_IsLastBucket(table, bucket)
+                && Table_CanAddBucket(table)
+                && Table_HasShiftableNodes(&table->id, bucket, node))
+        {
+            Bucket *new_bucket = Table_AddBucket(table);
+            check(new_bucket != NULL, "Error adding new bucket");
 
             rc = Table_ShiftBucketNodes(table, bucket);
             check(rc == 0, "Table_ShiftBucketNodes failed");
 
             bucket = Table_FindBucket(table, &node->id);
             check(bucket != NULL, "Found no bucket after adding one");
-	}
+        }
     }
 
     if (Bucket_IsFull(bucket))
@@ -200,8 +200,8 @@ int Table_CopyAndAddNode(Table *dest, Node *node)
     Table_InsertNodeResult result = Table_InsertNode(dest, copy);
 
     if (result.rc == ERROR
-        || result.rc == OKFull
-        || result.rc == OKAlreadyAdded)
+            || result.rc == OKFull
+            || result.rc == OKAlreadyAdded)
     {
         Node_Destroy(copy);
     }
@@ -223,7 +223,7 @@ Bucket *Table_AddBucket(Table *table)
 
     Bucket *bucket = Bucket_Create();
     check_mem(bucket);
-    
+
     bucket->index = table->end;
     table->buckets[table->end++] = bucket;
 
@@ -253,13 +253,13 @@ int Table_ForEachNode(Table *table, void *context, NodeOp operate)
 
     Bucket **bucket;
     for (bucket = table->buckets;
-         bucket < &table->buckets[table->end];
-         bucket++)
+            bucket < &table->buckets[table->end];
+            bucket++)
     {
         Node **node;
         for (node = (*bucket)->nodes;
-             node < &(*bucket)->nodes[BUCKET_K];
-             node++)
+                node < &(*bucket)->nodes[BUCKET_K];
+                node++)
         {
             if (*node == NULL)
             {
@@ -309,8 +309,8 @@ Node *Table_FindNode(Table *table, Hash *id)
     Node **node;
 
     for (node = bucket->nodes;
-         node < &bucket->nodes[BUCKET_K];
-         node++)
+            node < &bucket->nodes[BUCKET_K];
+            node++)
     {
         if (*node != NULL && Hash_Equals(id, &(*node)->id))
         {
@@ -416,9 +416,9 @@ int AppendLine(bstring dump, Node *node)
     assert(node != NULL && "NULL Node pointer");
 
     bstring line = bformat("%s %s %d\n",
-                           Hash_Str(&node->id),
-                           inet_ntoa(node->addr),
-                           ntohs(node->port));
+            Hash_Str(&node->id),
+            inet_ntoa(node->addr),
+            ntohs(node->port));
     int rc = bconcat(dump, line);
 
     check(rc == BSTR_OK, "bconcat failed");
@@ -543,7 +543,7 @@ Table *Table_Read(bstring dump)
 
         node = malloc(sizeof(Node));
         check_mem(node);
-        
+
         rc = ReadLine(lines->entry[i], node);
         check(rc == 0, "ReadLine failed");
 

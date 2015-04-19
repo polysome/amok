@@ -8,7 +8,7 @@ char *test_RandomFill()
     const int seed = 0;
     RandomState *rsa = RandomState_Create(seed);
     mu_assert(rsa != NULL, "RandomState_Create failed");
-    
+
     RandomState *rsb = RandomState_Create(seed);
     mu_assert(rsb != NULL, "RandomState_Create failed");
 
@@ -17,20 +17,21 @@ char *test_RandomFill()
 
     while (count-- > 0)
     {
-	rc = Random_Fill(rsa, (char *)&ia, 8);
-	mu_assert(rc == 0, "RandomFill failed");
+        rc = Random_Fill(rsa, (char *)&ia, 8);
+        mu_assert(rc == 0, "RandomFill failed");
 
-	rc = Random_Fill(rsb, (char *)&ib, 8);
+        rc = Random_Fill(rsb, (char *)&ib, 8);
 
-	mu_assert(ia == ib, "Random values not equal");
+        fprintf(stderr, "Failed\n");
+        mu_assert(ia == ib, "Random values not equal");
     }
 
     int i = 0;
     for (i = 0; i < 10; i++)
     {
-	char *buf = malloc(i);
-	Random_Fill(rsa, buf, i);
-	free(buf);
+        char *buf = malloc(i);
+        Random_Fill(rsa, buf, i);
+        free(buf);
     }
 
     RandomState_Destroy(rsa);

@@ -55,7 +55,7 @@
         printf("FAILED: %s\n", result);\
     }\
     else {\
-    printf("ALL TESTS PASSED\n");\
+        printf("ALL TESTS PASSED\n");\
     }\
     printf("Tests run: %d\n", tests_run);\
     exit(result != 0);\

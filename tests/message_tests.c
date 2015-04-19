@@ -54,7 +54,7 @@ char *test_CreateDestroy_QFindNode()
     mu_assert(message->type == QFindNode, "Wrong message type");
     mu_assert(Hash_Equals(&id, &message->id), "Wrong message id");
     mu_assert(Hash_Equals(&target, message->data.qfindnode.target),
-              "Wrong target");
+            "Wrong target");
     mu_assert(message->t != NULL, "No message t");
     mu_assert(message->t_len > 0, "No t_len");
     mu_assert(Node_Same(&to, &message->node), "Wrong node");
@@ -81,7 +81,7 @@ char *test_CreateDestroy_QGetPeers()
     mu_assert(message->type == QGetPeers, "Wrong message type");
     mu_assert(Hash_Equals(&id, &message->id), "Wrong message id");
     mu_assert(Hash_Equals(&info_hash, message->data.qgetpeers.info_hash),
-              "Wrong target");
+            "Wrong target");
     mu_assert(message->t != NULL, "No message t");
     mu_assert(message->t_len > 0, "No t_len");
     mu_assert(Node_Same(&to, &message->node), "Wrong node");
@@ -106,20 +106,20 @@ char *test_CreateDestroy_QAnnouncePeer()
     Token token = Client_MakeToken(client, &to);
 
     Message *message = Message_CreateQAnnouncePeer(client,
-                                                   &to,
-                                                   &info_hash,
-                                                   token.value,
-                                                   HASH_BYTES);
+            &to,
+            &info_hash,
+            token.value,
+            HASH_BYTES);
 
     mu_assert(message != NULL, "Message_CreateQGetPeers failed");
     mu_assert(message->type == QAnnouncePeer, "Wrong message type");
     mu_assert(Hash_Equals(&id, &message->id), "Wrong message id");
     mu_assert(Hash_Equals(&info_hash, message->data.qannouncepeer.info_hash),
-              "Wrong target");
+            "Wrong target");
     mu_assert(message->data.qannouncepeer.port == peer_port, "Wrong peer port");
     mu_assert(message->data.qannouncepeer.token.len == HASH_BYTES, "Wrong token_len");
     mu_assert(Hash_Equals(&token, (Hash *)message->data.qannouncepeer.token.data),
-              "Wrong token");
+            "Wrong token");
     mu_assert(message->t != NULL, "No message t");
     mu_assert(message->t_len > 0, "No t_len");
     mu_assert(Node_Same(&to, &message->node), "Wrong node");
@@ -216,13 +216,13 @@ char *test_CreateDestroy_RFindNode()
         Message *message = Message_CreateRFindNode(client, query, found);
 
         mu_assert(message->data.rfindnode.count == (unsigned int)i,
-                  "Wrong node count");
+                "Wrong node count");
 
         for (j = 0; j < DArray_count(found); j++)
         {
             mu_assert(Node_Same(DArray_get(found, j),
-                                message->data.rfindnode.nodes[j]),
-                      "Wrong node in message");
+                        message->data.rfindnode.nodes[j]),
+                    "Wrong node in message");
         }
 
         mu_assert(message != NULL, "Message_CreateRFindNode failed");
@@ -311,29 +311,29 @@ char *test_CreateDestroy_RGetPeers_Nodes()
         token.value[5] = i;
 
         Message *message = Message_CreateRGetPeers(client,
-                                                   query,
-                                                   NULL,
-                                                   found,
-                                                   &token);
+                query,
+                NULL,
+                found,
+                &token);
 
         mu_assert(message->data.rgetpeers.values == NULL, "Unwanted peers");
         mu_assert(message->data.rgetpeers.count == (unsigned int)i,
-                  "Wrong node count");
+                "Wrong node count");
 
         for (j = 0; j < DArray_count(found); j++)
         {
             mu_assert(Node_Same(DArray_get(found, j),
-                                message->data.rgetpeers.nodes[j]),
-                      "Wrong node in message");
+                        message->data.rgetpeers.nodes[j]),
+                    "Wrong node in message");
         }
 
         mu_assert(message != NULL, "Message_CreateRGetPeers failed");
         mu_assert(message->type == RGetPeers, "Wrong message type");
         mu_assert(Hash_Equals(&id, &message->id), "Wrong message id");
         mu_assert(message->data.rgetpeers.token.len == HASH_BYTES,
-                  "Wrong token_len");
+                "Wrong token_len");
         mu_assert(Hash_Equals(&token, (Hash *)message->data.rgetpeers.token.data),
-                  "Wrong token");
+                "Wrong token");
         mu_assert(message->t != NULL, "No message t");
         mu_assert(message->t_len > 0, "No t_len");
         mu_assert(SameT(query, message), "Wrong t");
@@ -384,14 +384,14 @@ char *test_CreateDestroy_RGetPeers_Peers()
         token.value[5] = i;
 
         Message *message = Message_CreateRGetPeers(client,
-                                                   query,
-                                                   found,
-                                                   NULL,
-                                                   &token);
+                query,
+                found,
+                NULL,
+                &token);
 
         mu_assert(message->data.rgetpeers.nodes == NULL, "Unwanted nodes");
         mu_assert(message->data.rgetpeers.count == (unsigned int)i,
-                  "Wrong node count");
+                "Wrong node count");
 
         int j = 0;
         for (j = 0; j < DArray_count(found); j++)
@@ -406,9 +406,9 @@ char *test_CreateDestroy_RGetPeers_Peers()
         mu_assert(message->type == RGetPeers, "Wrong message type");
         mu_assert(Hash_Equals(&id, &message->id), "Wrong message id");
         mu_assert(message->data.rgetpeers.token.len == HASH_BYTES,
-                  "Wrong token_len");
+                "Wrong token_len");
         mu_assert(Hash_Equals(&token, (Hash *)message->data.rgetpeers.token.data),
-                  "Wrong token");
+                "Wrong token");
         mu_assert(message->t != NULL, "No message t");
         mu_assert(message->t_len > 0, "No t_len");
         mu_assert(SameT(query, message), "Wrong t");

@@ -44,7 +44,7 @@ DArray *CloseNodes_GetNodes(CloseNodes *close)
     assert(close != NULL && "NULL CloseNodes pointer");
 
     DArray *nodes = DArray_create(sizeof(Node *),
-                                  DArray_max(close->close_nodes));
+            DArray_max(close->close_nodes));
     check(nodes != NULL, "DArray_create failed");
 
     int i = 0;

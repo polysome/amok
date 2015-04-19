@@ -50,17 +50,17 @@ int Hash_Prefix(Hash *hash, Hash *prefix, unsigned int prefix_len)
 
     while (prefix_len >= 8)
     {
-	hash->value[i] = prefix->value[i];
+        hash->value[i] = prefix->value[i];
 
-	prefix_len -= 8;
-	i++;
+        prefix_len -= 8;
+        i++;
     }
 
     if (i < HASH_BYTES)
     {
-	char mask = ((char)~0) << (8 - prefix_len);
-	hash->value[i] &= ~mask;
-	hash->value[i] |= mask & prefix->value[i];
+        char mask = ((char)~0) << (8 - prefix_len);
+        hash->value[i] &= ~mask;
+        hash->value[i] |= mask & prefix->value[i];
     }
 
     return 0;
@@ -101,7 +101,7 @@ int Hash_SharedPrefix(Hash *a, Hash *b)
 
     for (; hi < HASH_BYTES; hi++)
     {
-	if (a->value[hi] != b->value[hi])
+        if (a->value[hi] != b->value[hi])
             break;
     }
 
@@ -109,20 +109,20 @@ int Hash_SharedPrefix(Hash *a, Hash *b)
 
     if (hi < HASH_BYTES)
     {
-	uint8_t mask = 1 << 7;
+        uint8_t mask = 1 << 7;
         uint8_t xor = a->value[hi] ^ b->value[hi];
-	while (mask)
-	{
+        while (mask)
+        {
             if (!(mask & xor))
-	    {
-		bi++;
-		mask = mask >> 1;
-	    }
-	    else
-	    {
-		goto done;
-	    }
-	}
+            {
+                bi++;
+                mask = mask >> 1;
+            }
+            else
+            {
+                goto done;
+            }
+        }
     }
 
     assert(bi <= HASH_BITS && "Shared prefix too large");

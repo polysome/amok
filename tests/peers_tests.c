@@ -45,10 +45,10 @@ char *test_MaxPeersInRGetPeersEncoded()
     }
 
     Message *response = Message_CreateRGetPeers(client,
-                                                query,
-                                                peers,
-                                                NULL,
-                                                &token);
+            query,
+            peers,
+            NULL,
+            &token);
 
     int rc = Message_Encode(response, buffer, UDPBUFLEN);
     mu_assert(rc > 0, "Message_Encode failed");

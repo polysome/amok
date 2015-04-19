@@ -23,34 +23,34 @@ int Message_Encode(Message *message, char *dest, size_t len)
 
     switch (message->type)
     {
-    case QPing: return EncodeQueryPing(message, dest, len);
-    case QFindNode: return EncodeQueryFindNode(message, dest, len);
-    case QGetPeers: return EncodeQueryGetPeers(message, dest, len);
-    case QAnnouncePeer: return EncodeQueryAnnouncePeer(message, dest, len);
-    case RPing: return EncodeResponsePing(message, dest, len);
-    case RFindNode: return EncodeResponseFindNode(message, dest, len);
-    case RGetPeers: return EncodeResponseGetPeers(message, dest, len);
-    case RAnnouncePeer: return EncodeResponseAnnouncePeer(message, dest, len);
-    case RError: return EncodeResponseError(message, dest, len);
-    default: log_err("Can't encode unknown message type");
-	return -1;
+        case QPing: return EncodeQueryPing(message, dest, len);
+        case QFindNode: return EncodeQueryFindNode(message, dest, len);
+        case QGetPeers: return EncodeQueryGetPeers(message, dest, len);
+        case QAnnouncePeer: return EncodeQueryAnnouncePeer(message, dest, len);
+        case RPing: return EncodeResponsePing(message, dest, len);
+        case RFindNode: return EncodeResponseFindNode(message, dest, len);
+        case RGetPeers: return EncodeResponseGetPeers(message, dest, len);
+        case RAnnouncePeer: return EncodeResponseAnnouncePeer(message, dest, len);
+        case RError: return EncodeResponseError(message, dest, len);
+        default: log_err("Can't encode unknown message type");
+                 return -1;
     }
 }
 
 int digits(size_t l)
 {
     assert(l < 100000 && "Too many digits");
-    
+
     if (l < 10)
-	return 1;
+        return 1;
     if (l < 100)
-	return 2;
+        return 2;
     if (l < 1000)
-	return 3;
+        return 3;
     if (l < 10000)
-	return 4;
+        return 4;
     if (l < 100000)
-	return 5;
+        return 5;
 
     return 20;
 }
@@ -112,12 +112,12 @@ int EncodeQueryPing(Message *message, char *dest, size_t len)
     char *orig_dest = dest;
 
     check(SLen(QPINGA)
-	  + HASHLEN
-	  + SLen(QPINGB)
-	  + TLen(message)
-	  + SLen(QPINGC)
-	  <= len,
-	  "ping query would overflow dest");
+            + HASHLEN
+            + SLen(QPINGB)
+            + TLen(message)
+            + SLen(QPINGC)
+            <= len,
+            "ping query would overflow dest");
 
     SCpy(dest, QPINGA);
     HCpy(dest, message->id.value);
@@ -147,14 +147,14 @@ int EncodeQueryFindNode(Message *message, char *dest, size_t len)
     char *orig_dest = dest;
 
     check(SLen(QFINDNODEA)
-	  + HASHLEN
-	  + SLen(QFINDNODEB)
-	  + HASHLEN
-	  + SLen(QFINDNODEC)
-	  + TLen(message)
-	  + SLen(QFINDNODED)
-	  <= len,
-	  "find_node query would overflow dest");
+            + HASHLEN
+            + SLen(QFINDNODEB)
+            + HASHLEN
+            + SLen(QFINDNODEC)
+            + TLen(message)
+            + SLen(QFINDNODED)
+            <= len,
+            "find_node query would overflow dest");
 
     SCpy(dest, QFINDNODEA);
     HCpy(dest, message->id.value);
@@ -163,7 +163,7 @@ int EncodeQueryFindNode(Message *message, char *dest, size_t len)
     SCpy(dest, QFINDNODEC);
     TCpy(&dest, message);
     SCpy(dest, QFINDNODED);
-    
+
     assert(dest - orig_dest <= (ssize_t)len && "Overflow");
 
     return dest - orig_dest;
@@ -186,14 +186,14 @@ int EncodeQueryGetPeers(Message *message, char *dest, size_t len)
     char *orig_dest = dest;
 
     check(SLen(QGETPEERSA)
-	  + HASHLEN
-	  + SLen(QGETPEERSB)
-	  + HASHLEN
-	  + SLen(QGETPEERSC)
-	  + TLen(message)
-	  + SLen(QGETPEERSD)
-	  <= len,
-	  "get_peers query would overflow dest");
+            + HASHLEN
+            + SLen(QGETPEERSB)
+            + HASHLEN
+            + SLen(QGETPEERSC)
+            + TLen(message)
+            + SLen(QGETPEERSD)
+            <= len,
+            "get_peers query would overflow dest");
 
     SCpy(dest, QGETPEERSA);
     HCpy(dest, message->id.value);
@@ -241,18 +241,18 @@ int EncodeQueryAnnouncePeer(Message *message, char *dest, size_t len)
     QAnnouncePeerData *data = &message->data.qannouncepeer;
 
     check(SLen(QANNOUNCEPEERA)
-	  + HASHLEN
-	  + SLen(QANNOUNCEPEERB)
-	  + HASHLEN
-	  + SLen(QANNOUNCEPEERC)
-	  + ILen(data->port)
-	  + SLen(QANNOUNCEPEERD)
-	  + BStringLen(data->token.len)
-	  + SLen(QANNOUNCEPEERE)
-	  + TLen(message)
-	  + SLen(QANNOUNCEPEERF)
-	  <= len,
-	  "announce_peer query would overflow dest");
+            + HASHLEN
+            + SLen(QANNOUNCEPEERB)
+            + HASHLEN
+            + SLen(QANNOUNCEPEERC)
+            + ILen(data->port)
+            + SLen(QANNOUNCEPEERD)
+            + BStringLen(data->token.len)
+            + SLen(QANNOUNCEPEERE)
+            + TLen(message)
+            + SLen(QANNOUNCEPEERF)
+            <= len,
+            "announce_peer query would overflow dest");
 
     SCpy(dest, QANNOUNCEPEERA);
     HCpy(dest, message->id.value);
@@ -287,12 +287,12 @@ int EncodeResponsePing(Message *message, char *dest, size_t len)
     char *orig_dest = dest;
 
     check(SLen(RPINGA)
-	  + HASHLEN
-	  + SLen(RPINGB)
-	  + TLen(message)
-	  + SLen(RPINGC)
-	  <= len,
-	  "ping response would overflow dest");
+            + HASHLEN
+            + SLen(RPINGB)
+            + TLen(message)
+            + SLen(RPINGC)
+            <= len,
+            "ping response would overflow dest");
 
     SCpy(dest, RPINGA);
     HCpy(dest, message->id.value);
@@ -325,18 +325,18 @@ void NodesCpy(char **dest, Node **nodes, size_t count)
     unsigned int i = 0;
     for (i = 0; i < count; i++)
     {
-	memcpy(*dest, nodes[i]->id.value, HASH_BYTES);
-	*dest += HASH_BYTES;
+        memcpy(*dest, nodes[i]->id.value, HASH_BYTES);
+        *dest += HASH_BYTES;
 
-	(*dest)[0] = nodes[i]->addr.s_addr >> 24;
-	(*dest)[1] = nodes[i]->addr.s_addr >> 16;
-	(*dest)[2] = nodes[i]->addr.s_addr >> 8;
-	(*dest)[3] = nodes[i]->addr.s_addr;
+        (*dest)[0] = nodes[i]->addr.s_addr >> 24;
+        (*dest)[1] = nodes[i]->addr.s_addr >> 16;
+        (*dest)[2] = nodes[i]->addr.s_addr >> 8;
+        (*dest)[3] = nodes[i]->addr.s_addr;
 
-	(*dest)[4] = nodes[i]->port >> 8;
-	(*dest)[5] = nodes[i]->port;
+        (*dest)[4] = nodes[i]->port >> 8;
+        (*dest)[5] = nodes[i]->port;
 
-	*dest += 6;
+        *dest += 6;
     }
 }    
 
@@ -355,13 +355,13 @@ int EncodeResponseFindNode(Message *message, char *dest, size_t len)
     RFindNodeData *data = &message->data.rfindnode;
 
     check(SLen(RFINDNODEA)
-	  + HASHLEN
-	  + NodesLen(data->count)
-	  + SLen(RFINDNODEB)
-	  + TLen(message)
-	  + SLen(RFINDNODEC)
-	  <= len,
-	  "find_node response would overflow dest");
+            + HASHLEN
+            + NodesLen(data->count)
+            + SLen(RFINDNODEB)
+            + TLen(message)
+            + SLen(RFINDNODEC)
+            <= len,
+            "find_node response would overflow dest");
 
     SCpy(dest, RFINDNODEA);
     HCpy(dest, message->id.value);
@@ -373,7 +373,7 @@ int EncodeResponseFindNode(Message *message, char *dest, size_t len)
     assert(dest - orig_dest <= (ssize_t)len && "Overflow");
 
     return dest - orig_dest;
-    
+
 error:
     return -1;
 }
@@ -393,17 +393,17 @@ void ValuesCpy(char **dest, Peer *values, int count)
     int i = 0;
     for (i = 0; i < count; i++)
     {
-	(*dest)[0] = '6';
-	(*dest)[1] = ':';
-	(*dest)[2] = values[i].addr >> 24;
-	(*dest)[3] = values[i].addr >> 16;
-	(*dest)[4] = values[i].addr >> 8;
-	(*dest)[5] = values[i].addr;
+        (*dest)[0] = '6';
+        (*dest)[1] = ':';
+        (*dest)[2] = values[i].addr >> 24;
+        (*dest)[3] = values[i].addr >> 16;
+        (*dest)[4] = values[i].addr >> 8;
+        (*dest)[5] = values[i].addr;
 
-	(*dest)[6] = values[i].port >> 8;
-	(*dest)[7] = values[i].port;
+        (*dest)[6] = values[i].port >> 8;
+        (*dest)[7] = values[i].port;
 
-	*dest += 8;
+        *dest += 8;
     }
 
     *(*dest)++ = 'e';
@@ -426,16 +426,16 @@ int EncodeResponseGetPeers_values(Message *message, char *dest, size_t len)
     assert(data->values != NULL && "NULL Peer values pointer");
 
     check(SLen(RGETPEERSA)
-	  + HASHLEN
-	  + SLen(RGETPEERSB)
-	  + BStringLen(data->token.len)
-	  + SLen("6:values")
-	  + ValuesLen(data->count)
-	  + SLen("e")
-	  + TLen(message)
-	  + SLen(RGETPEERSC)
-	  <= len,
-	  "get_peers response would overflow dest");
+            + HASHLEN
+            + SLen(RGETPEERSB)
+            + BStringLen(data->token.len)
+            + SLen("6:values")
+            + ValuesLen(data->count)
+            + SLen("e")
+            + TLen(message)
+            + SLen(RGETPEERSC)
+            <= len,
+            "get_peers response would overflow dest");
 
     SCpy(dest, RGETPEERSA);
     HCpy(dest, message->id.value);
@@ -467,15 +467,15 @@ int EncodeResponseGetPeers_nodes(Message *message, char *dest, size_t len)
     assert(data->nodes != NULL && "NULL Peer values pointer");
 
     check(SLen(RGETPEERSA)
-	  + HASHLEN
-	  + NodesLen(data->count)
-	  + SLen(RGETPEERSB)
-	  + BStringLen(data->token.len)
-	  + SLen("e")
-	  + TLen(message)
-	  + SLen(RGETPEERSC)
-	  <= len,
-	  "get_peers response would overflow dest");
+            + HASHLEN
+            + NodesLen(data->count)
+            + SLen(RGETPEERSB)
+            + BStringLen(data->token.len)
+            + SLen("e")
+            + TLen(message)
+            + SLen(RGETPEERSC)
+            <= len,
+            "get_peers response would overflow dest");
 
     SCpy(dest, RGETPEERSA);
     HCpy(dest, message->id.value);
@@ -499,9 +499,9 @@ int EncodeResponseGetPeers(Message *message, char *dest, size_t len)
     assert(dest != NULL && "NULL char dest pointer");
 
     if (message->data.rgetpeers.values != NULL)
-	return EncodeResponseGetPeers_values(message, dest, len);
+        return EncodeResponseGetPeers_values(message, dest, len);
     else if (message->data.rgetpeers.nodes != NULL)
-	return EncodeResponseGetPeers_nodes(message, dest, len);
+        return EncodeResponseGetPeers_nodes(message, dest, len);
 
     sentinel("get_peers message without values and nodes");
 error:
@@ -522,12 +522,12 @@ int EncodeResponseAnnouncePeer(Message *message, char *dest, size_t len)
     char *orig_dest = dest;
 
     check(SLen(RANNOUNCEPEERA)
-	  + HASHLEN
-	  + SLen(RANNOUNCEPEERB)
-	  + TLen(message)
-	  + SLen(RANNOUNCEPEERC)
-	  <= len,
-	  "announce_peer response would overflow dest");
+            + HASHLEN
+            + SLen(RANNOUNCEPEERB)
+            + TLen(message)
+            + SLen(RANNOUNCEPEERC)
+            <= len,
+            "announce_peer response would overflow dest");
 
     SCpy(dest, RANNOUNCEPEERA);
     HCpy(dest, message->id.value);
@@ -553,13 +553,13 @@ int EncodeResponseError(Message *message, char *dest, size_t len)
     RErrorData *data = &message->data.rerror;
 
     check(SLen("d1:el")
-	  + ILen(data->code)
-	  + BStringLen(blength(data->message))
-	  + SLen("e")
-	  + TLen(message)
-	  + SLen("1:y1:ee")
-	  <= len,
-	  "error response would overflow dest");
+            + ILen(data->code)
+            + BStringLen(blength(data->message))
+            + SLen("e")
+            + TLen(message)
+            + SLen("1:y1:ee")
+            <= len,
+            "error response would overflow dest");
 
     SCpy(dest, "d1:el");
     ICpy(&dest, data->code);

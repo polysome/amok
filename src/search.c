@@ -21,8 +21,8 @@ Search *Search_Create(Hash *id)
     check(search->peers != NULL, "Peers_Create failed");
 
     search->tokens = Hashmap_create(
-        (Hashmap_compare)Distance_Compare,
-        (Hashmap_hash)Hash_Hash);
+            (Hashmap_compare)Distance_Compare,
+            (Hashmap_hash)Hash_Hash);
     check(search->tokens != NULL, "Hashmap_create failed");
 
     return search;
@@ -180,8 +180,8 @@ int SendFindNodes(struct ClientSearch *context, Node *node)
         return 0;
 
     Message *query = Message_CreateQFindNode(context->client,
-                                             node,
-                                             &context->search->table->id);
+            node,
+            &context->search->table->id);
     check(query != NULL, "Message_CreateQFindNode failed");
 
     query->context = context->search;
@@ -203,8 +203,8 @@ int SendGetPeers(struct ClientSearch *context, Node *node)
         return 0;
 
     Message *query = Message_CreateQGetPeers(context->client,
-                                             node,
-                                             &context->search->table->id);
+            node,
+            &context->search->table->id);
     check(query != NULL, "Message_CreateQGetPeers failed");
 
     query->context = context->search;
@@ -227,7 +227,7 @@ int SendAnnouncePeer(struct ClientSearch *context, Node *node)
         return 0;
 
     struct FToken *token = Search_GetToken(context->search,
-                                           &node->id);
+            &node->id);
 
     if (token == NULL)
     {
@@ -235,10 +235,10 @@ int SendAnnouncePeer(struct ClientSearch *context, Node *node)
     }
 
     Message *query = Message_CreateQAnnouncePeer(context->client,
-                                                 node,
-                                                 &context->search->table->id,
-                                                 token->data,
-                                                 token->len);
+            node,
+            &context->search->table->id,
+            token->data,
+            token->len);
     check(query != NULL, "Message_CreateQAnnouncePeer failed");
 
     query->context = context->search;
@@ -268,13 +268,13 @@ int Search_DoWork(Client *client, Search *search)
     check(rc == 0, "SendFindNodes failed");
 
     rc = Table_ForEachCloseNode(search->table,
-                                &context,
-                                (NodeOp)SendGetPeers);
+            &context,
+            (NodeOp)SendGetPeers);
     check(rc == 0, "SendGetPeers failed");
 
     rc = Table_ForEachCloseNode(search->table,
-                                &context,
-                                (NodeOp)SendAnnouncePeer);
+            &context,
+            (NodeOp)SendAnnouncePeer);
     check(rc == 0, "SendAnnouncePeer failed");
 
     if (context.count > 0)
