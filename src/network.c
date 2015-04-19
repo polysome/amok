@@ -11,7 +11,8 @@
 #include <dht/network.h>
 #include <lcthw/dbg.h>
 
-int NetworkUp(Client *client)
+int 
+NetworkUp(Client *client)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(client->socket != -1 && "Invalid Client socket");
@@ -32,7 +33,8 @@ error:
     return -1;
 }
 
-int NetworkDown(Client *client)
+int 
+NetworkDown(Client *client)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(client->socket != -1 && "Invalid Client socket");
@@ -53,7 +55,8 @@ error:
     return -1;
 }
 
-int Send(Client *client, Node *node, char *buf, size_t len)
+int 
+Send(Client *client, Node *node, char *buf, size_t len)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(node != NULL && "NULL Node pointer");
@@ -79,7 +82,8 @@ error:
     return -1;
 }
 
-int Receive(Client *client, Node *node, char *buf, size_t len)
+int 
+Receive(Client *client, Node *node, char *buf, size_t len)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(node != NULL && "NULL Node pointer");
@@ -115,7 +119,8 @@ error:
     return -1;
 }
 
-int SendMessage(Client *client, Message *msg)
+int 
+SendMessage(Client *client, Message *msg)
 {
     assert(client != NULL && "NULL Client pointer");
     assert(msg != NULL && "NULL Message pointer");
@@ -150,7 +155,8 @@ error:
     return -1;
 }
 
-int ReceiveMessage(Client *client, Message **message)
+int 
+ReceiveMessage(Client *client, Message **message)
 {
     assert(client != NULL && "NULL Client pointer");
 
